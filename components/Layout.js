@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -10,10 +10,15 @@ import {
   createMuiTheme,
   ThemeProvider,
   CssBaseline,
+  Switch,
 } from '@material-ui/core';
 import useStyles from '../utils/styles';
+import { Store } from '../utils/store';
+import Cookies from 'js-cookie';
 
 const Layout = ({ description, title, children }) => {
+  const { state, dispatch } = useContext(Store);
+  const { darkMode } = state;
   const theme = createMuiTheme({
     typography: {
       h1: {
@@ -34,7 +39,7 @@ const Layout = ({ description, title, children }) => {
       },
     },
     palette: {
-      type: 'light',
+      type: darkMode ? 'dark' : 'light',
       primary: {
         main: '#f0c000',
       },
@@ -44,6 +49,11 @@ const Layout = ({ description, title, children }) => {
     },
   });
   const classes = useStyles();
+  const darkModeChangeHandler = () => {
+    dispatch({ type: darkMode ? 'DARK_MODE_OFF' : 'DARK_MODE_ON' });
+    const newDarkMode = !darkMode;
+    Cookies.set('darkMode', newDarkMode ? 'ON' : 'OFF');
+  };
   return (
     <div>
       <Head>
@@ -61,6 +71,10 @@ const Layout = ({ description, title, children }) => {
             </NextLink>
             <div className={classes.grow}></div>
             <div>
+              <Switch
+                checked={darkMode}
+                onChange={darkModeChangeHandler}
+              ></Switch>
               <NextLink href="/cart" passHref>
                 <Link>Cart</Link>
               </NextLink>

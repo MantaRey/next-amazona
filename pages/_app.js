@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
 import '../styles/globals.css';
+import { StoreProvider } from '../utils/store';
 
 function MyApp({ Component, pageProps }) {
   //Use Effect is fix the issue with the rendering of server side Material UI elements
@@ -10,7 +10,11 @@ function MyApp({ Component, pageProps }) {
   //     jssStyles.parent.removeChild(jssStyles);
   //   }
   // }, []);
-  return <Component {...pageProps} />;
+  return (
+    <StoreProvider>
+      <Component {...pageProps} />
+    </StoreProvider>
+  );
 }
 
 export default MyApp;
