@@ -7,7 +7,7 @@ import {
   Typography,
   Container,
   Link,
-  createMuiTheme,
+  createTheme,
   ThemeProvider,
   CssBaseline,
   Switch,
@@ -19,7 +19,7 @@ import Cookies from 'js-cookie';
 const Layout = ({ description, title, children }) => {
   const { state, dispatch } = useContext(Store);
   const { darkMode } = state;
-  const theme = createMuiTheme({
+  const theme = createTheme({
     typography: {
       h1: {
         fontSize: '1.6rem',
