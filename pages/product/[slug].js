@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
 import data from '../../utils/data';
 import Layout from '../../components/Layout';
@@ -16,10 +16,15 @@ import {
 import useStyles from '../../utils/styles';
 import db from '../../utils/db';
 import Product from '../../models/Product';
+import axios from 'axios';
+import { Store } from '../../utils/store';
 
 const ProductScreen = (props) => {
+  const { state, dispatch } = useContext(Store);
+  const { darkMode, cart } = state;
   const { product } = props;
   const classes = useStyles();
+  console.log(cart);
   /*
   Old way of getting slug from the router and finding the local instance of product
   const router = useRouter();
@@ -29,6 +34,17 @@ const ProductScreen = (props) => {
   if (!product) {
     return <div>Produt Not Found</div>;
   }
+  const addToCartHandler = async () => {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/products/${product._id}`
+    );
+    // console.log(data);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry, the Product is out of Stock.');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+  };
   return (
     <Layout title={product.name} description={product.description}>
       <div className={classes.section}>
@@ -97,7 +113,12 @@ const ProductScreen = (props) => {
                 </Grid>
               </ListItem>
               <ListItem>
-                <Button fullWidth variant="contained" color="primary">
+                <Button
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  onClick={addToCartHandler}
+                >
                   <Typography variant="button">Add to Cart</Typography>
                 </Button>
               </ListItem>
