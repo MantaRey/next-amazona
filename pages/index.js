@@ -11,14 +11,17 @@ import {
 import NextLink from 'next/link';
 import data from '../utils/data';
 import Layout from '../components/Layout';
+import db from '../utils/db';
+import Product from '../models/Product';
 
-export default function Home() {
+export default function Home(props) {
+  const { products } = props;
   return (
     <Layout>
       <div>
         <h1>Products</h1>
         <Grid container spacing={3}>
-          {data.products.map((product) => (
+          {products.map((product) => (
             <Grid item md={4} key={product.name}>
               <Card>
                 <NextLink href={`/product/${product.slug}`} passHref>
@@ -46,4 +49,19 @@ export default function Home() {
       </div>
     </Layout>
   );
+}
+
+//Mongoose queries return an instance of the Mongoose Document class
+//lean function tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO(Plain Object)
+export async function getServerSideProps() {
+  await db.connect();
+  const products = await Product.find({}).lean();
+  await db.disconnect();
+  //this line converts the unserializable values in each item in products to only primary data types, so that they can be serialized to JSON
+  products.map((product) => db.convertDocToObj(product));
+  return {
+    props: {
+      products,
+    },
+  };
 }

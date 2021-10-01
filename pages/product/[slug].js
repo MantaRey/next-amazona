@@ -14,12 +14,18 @@ import {
   Button,
 } from '@material-ui/core';
 import useStyles from '../../utils/styles';
+import db from '../../utils/db';
+import Product from '../../models/Product';
 
-const ProductScreen = () => {
+const ProductScreen = (props) => {
+  const { product } = props;
   const classes = useStyles();
+  /*
+  Old way of getting slug from the router and finding the local instance of product
   const router = useRouter();
   const { slug } = router.query;
   const product = data.products.find((product) => product.slug === slug);
+  */
   if (!product) {
     return <div>Produt Not Found</div>;
   }
@@ -102,5 +108,19 @@ const ProductScreen = () => {
     </Layout>
   );
 };
+
+export async function getServerSideProps(context) {
+  const { params } = context;
+  const { slug } = params;
+  await db.connect();
+  const product = await Product.findOne({ slug }).lean();
+  await db.disconnect();
+  return {
+    props: {
+      //this line converts the unserializable values in product to only primary data types that can be serialized to JSON
+      product: db.convertDocToObj(product),
+    },
+  };
+}
 
 export default ProductScreen;

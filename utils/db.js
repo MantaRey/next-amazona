@@ -35,5 +35,16 @@ const disconnect = async () => {
   }
 };
 
-const db = { connect, disconnect };
+//Data Types in Doc must be either Number, String, or Boolean in order to be convereted to JSON
+//Converts those that arent the above data types, to valid ones
+const convertDocToObj = (doc) => {
+  //   console.log(`Old: ${typeof doc._id}`);
+  doc._id = doc._id.toString();
+  //   console.log(`New: ${typeof doc._id}`);
+  doc.createdAt = doc.createdAt.toString();
+  doc.updatedAt = doc.updatedAt.toString();
+  return doc;
+};
+
+const db = { connect, disconnect, convertDocToObj };
 export default db;
