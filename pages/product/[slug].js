@@ -20,6 +20,7 @@ import axios from 'axios';
 import { Store } from '../../utils/store';
 
 const ProductScreen = (props) => {
+  const router = useRouter();
   const { state, dispatch } = useContext(Store);
   const { darkMode, cart } = state;
   const { product } = props;
@@ -44,6 +45,7 @@ const ProductScreen = (props) => {
       return;
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+    router.push('/cart');
   };
   return (
     <Layout title={product.name} description={product.description}>
