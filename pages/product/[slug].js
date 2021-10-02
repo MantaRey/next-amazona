@@ -44,7 +44,15 @@ const ProductScreen = (props) => {
       window.alert('Sorry, the Product is out of Stock.');
       return;
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity: 1 } });
+    const existItem = state.cart.cartItems.find((x) => x._id === product._id);
+    const quantity = existItem ? existItem.quantity + 1 : 1;
+    if (data.countInStock < quantity) {
+      window.alert(
+        'Sorry, there are not enough of this Product in Stock to add another to your Cart.'
+      );
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
     router.push('/cart');
   };
   return (
@@ -52,7 +60,7 @@ const ProductScreen = (props) => {
       <div className={classes.section}>
         <NextLink href="/" passHref>
           <Link>
-            <Typography>&larr; Back</Typography>
+            <Typography>&larr; Back to Products</Typography>
           </Link>
         </NextLink>
       </div>

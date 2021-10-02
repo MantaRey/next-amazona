@@ -21,12 +21,30 @@ import React, { useContext } from 'react';
 import Layout from '../components/Layout';
 import { Store } from '../utils/store';
 import dynamic from 'next/dynamic';
+import axios from 'axios';
+import { useRouter } from 'next/router';
 
 const CartScreen = () => {
-  const { state } = useContext(Store);
+  const { state, dispatch } = useContext(Store);
+  const router = useRouter();
   const {
     cart: { cartItems },
   } = state;
+  const updateCartHandler = async (item, quantity) => {
+    const { data } = await axios.get(
+      `http://localhost:3000/api/products/${item._id}`
+    );
+    // console.log(data);
+    if (data.countInStock <= 0) {
+      window.alert('Sorry, the Product is out of Stock.');
+      return;
+    }
+    dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
+    router.push('/cart');
+  };
+  const removeItemHandler = (item) => {
+    dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
   return (
     <Layout title="Shopping Cart">
       <Typography component="h1" variant="h1">
@@ -34,7 +52,10 @@ const CartScreen = () => {
       </Typography>
       {cartItems.length === 0 ? (
         <div>
-          Cart is Empty. <NextLink href="/">Go Shopping.</NextLink>
+          Cart is Empty.{' '}
+          <NextLink href="/" passHref>
+            <Link>Go Shopping.</Link>
+          </NextLink>
         </div>
       ) : (
         <Grid container spacing={1}>
@@ -76,7 +97,12 @@ const CartScreen = () => {
                       </TableCell>
 
                       <TableCell>
-                        <Select value={item.quantity}>
+                        <Select
+                          value={item.quantity}
+                          onChange={(e) =>
+                            updateCartHandler(item, e.target.value)
+                          }
+                        >
                           {[...Array(item.countInStock).keys()].map((x) => (
                             <MenuItem key={x + 1} value={x + 1}>
                               {x + 1}
@@ -88,7 +114,11 @@ const CartScreen = () => {
                       <TableCell>${item.price}</TableCell>
 
                       <TableCell align="right">
-                        <Button variant="contained" color="secondary">
+                        <Button
+                          variant="contained"
+                          color="secondary"
+                          onClick={() => removeItemHandler(item)}
+                        >
                           x
                         </Button>
                       </TableCell>
