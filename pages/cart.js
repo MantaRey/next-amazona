@@ -20,6 +20,7 @@ import Image from 'next/image';
 import React, { useContext } from 'react';
 import Layout from '../components/Layout';
 import { Store } from '../utils/store';
+import dynamic from 'next/dynamic';
 
 const CartScreen = () => {
   const { state } = useContext(Store);
@@ -60,7 +61,7 @@ const CartScreen = () => {
                               alt={item.name}
                               width={50}
                               height={50}
-                              Layout="responsive"
+                              // Layout="responsive"
                             />
                           </Link>
                         </NextLink>
@@ -121,4 +122,6 @@ const CartScreen = () => {
   );
 };
 
-export default CartScreen;
+//Dynamic is used when we do not want something rendered on Server-Side
+//Instead we want it on Client-Side where SEO does not matter, CartScreen does not need to be Indexed, it is personalized for each user
+export default dynamic(() => Promise.resolve(CartScreen), { ssr: false });

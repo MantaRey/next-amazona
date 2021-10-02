@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { useRouter } from 'next/router';
-import data from '../../utils/data';
+// import data from '../../utils/data';
 import Layout from '../../components/Layout';
 import NextLink from 'next/link';
 import Image from 'next/image';
@@ -22,7 +22,7 @@ import { Store } from '../../utils/store';
 const ProductScreen = (props) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
-  const { darkMode, cart } = state;
+  const { cart } = state;
   const { product } = props;
   const classes = useStyles();
   console.log(cart);
@@ -63,7 +63,7 @@ const ProductScreen = (props) => {
             alt={product.name}
             width={640}
             height={640}
-            layout="responsive"
+            // layout="responsive"
           />
         </Grid>
         <Grid item md={3} xs={12}>
