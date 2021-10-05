@@ -14,7 +14,7 @@ import axios from 'axios';
 import { Store } from '../utils/store';
 import { useRouter } from 'next/router';
 
-const Login = () => {
+const Register = () => {
   const router = useRouter();
   const { redirect } = router.query; // login?redirect=/shipping -> redirect will contain shipping
   const { state, dispatch } = useContext(Store);
@@ -23,13 +23,20 @@ const Login = () => {
     router.push(redirect || '/');
   }
   const classes = useStyles();
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      alert('The passwords provided do not match one another.');
+      return;
+    }
     try {
-      const { data } = await axios.post('/api/users/login', {
+      const { data } = await axios.post('/api/users/register', {
+        name,
         email,
         password,
       });
@@ -39,12 +46,23 @@ const Login = () => {
     }
   };
   return (
-    <Layout title="Login">
+    <Layout title="Register">
       <form onSubmit={submitHandler} className={classes.form}>
         <Typography componet="h1" variant="h1">
-          Login
+          Register
         </Typography>
         <List>
+          <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="name"
+              label="Name"
+              inputProps={{ type: 'text' }}
+              onChange={(e) => setName(e.target.value)}
+            ></TextField>
+          </ListItem>
+
           <ListItem>
             <TextField
               variant="outlined"
@@ -68,15 +86,26 @@ const Login = () => {
           </ListItem>
 
           <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="confirmPassword"
+              label="Confirm Password"
+              inputProps={{ type: 'password' }}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            ></TextField>
+          </ListItem>
+
+          <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
-              Login
+              Register
             </Button>
           </ListItem>
 
           <ListItem>
-            Don&lsquo;t have an account? &nbsp;
-            <NextLink href={`/register?redirect=${redirect || '/'}`} passHref>
-              <Link>Register</Link>
+            Already have an account? &nbsp;
+            <NextLink href={`/login?redirect=${redirect || '/'}`} passHref>
+              <Link>Login</Link>
             </NextLink>
           </ListItem>
         </List>
@@ -85,4 +114,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
