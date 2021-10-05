@@ -6,13 +6,23 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
 import axios from 'axios';
+import { Store } from '../utils/store';
+import { useRouter } from 'next/router';
+import Cookies from 'js-cookie';
 
 const Login = () => {
+  const router = useRouter();
+  const { redirect } = router.query; // login?redirect=/shipping -> redirect will contain shipping
+  const { state, dispatch } = useContext(Store);
+  const { userInfo } = state;
+  if (userInfo) {
+    router.push(redirect || '/');
+  }
   const classes = useStyles();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -24,7 +34,7 @@ const Login = () => {
         email,
         password,
       });
-      alert('success login');
+      dispatch({ type: 'USER_LOGIN', payload: data });
     } catch (err) {
       alert(err.response.data ? err.response.data.message : err.message);
     }
@@ -65,7 +75,7 @@ const Login = () => {
           </ListItem>
 
           <ListItem>
-            Don't have an account? &nbsp;
+            Don&lsquo;t have an account? &nbsp;
             <NextLink href="/register" passHref>
               <Link>Register</Link>
             </NextLink>

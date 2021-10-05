@@ -25,7 +25,6 @@ const ProductScreen = (props) => {
   const { cart } = state;
   const { product } = props;
   const classes = useStyles();
-  console.log(cart);
   /*
   Old way of getting slug from the router and finding the local instance of product
   const router = useRouter();
