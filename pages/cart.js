@@ -40,10 +40,13 @@ const CartScreen = () => {
       return;
     }
     dispatch({ type: 'CART_ADD_ITEM', payload: { ...item, quantity } });
-    router.push('/cart');
+    // router.push('/cart');
   };
   const removeItemHandler = (item) => {
     dispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+  };
+  const checkoutHandler = () => {
+    router.push('/shipping');
   };
   return (
     <Layout title="Shopping Cart">
@@ -139,7 +142,12 @@ const CartScreen = () => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  <Button variant="contained" color="primary" fullWidth>
+                  <Button
+                    onClick={checkoutHandler}
+                    variant="contained"
+                    color="primary"
+                    fullWidth
+                  >
                     Check Out
                   </Button>
                 </ListItem>
