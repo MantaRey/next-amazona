@@ -6,7 +6,7 @@ import {
   TextField,
   Typography,
 } from '@material-ui/core';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
 import NextLink from 'next/link';
@@ -27,9 +27,12 @@ const Register = () => {
     formState: { errors },
   } = useForm();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  if (userInfo) {
-    router.push(redirect || '/');
-  }
+  useEffect(() => {
+    if (userInfo) {
+      router.push(redirect || '/');
+    }
+  }, [router, userInfo, redirect]);
+
   const classes = useStyles();
   // const [name, setName] = useState('');
   // const [email, setEmail] = useState('');
@@ -38,6 +41,7 @@ const Register = () => {
 
   const submitHandler = async ({ name, email, password, confirmPassword }) => {
     // e.preventDefault();
+    closeSnackbar();
     if (password !== confirmPassword) {
       enqueueSnackbar('The Passwords provided do not match one another', {
         variant: 'error',
@@ -69,16 +73,6 @@ const Register = () => {
           Register
         </Typography>
         <List>
-          {/* <ListItem>
-            <TextField
-              variant="outlined"
-              fullWidth
-              id="name"
-              label="Name"
-              inputProps={{ type: 'text' }}
-              onChange={(e) => setName(e.target.value)}
-            ></TextField>
-          </ListItem> */}
           <ListItem>
             <Controller
               name="name"
@@ -99,11 +93,11 @@ const Register = () => {
                   helperText={
                     errors.name
                       ? errors.name.type === 'minLength'
-                        ? 'Name length must be more than 2 characters'
+                        ? 'Name length must be more than 1 character'
                         : 'Name is Required'
                       : ''
                   }
-                  // onChange={(e) => setEmail(e.target.value)}
+                  // onChange={(e) => setName(e.target.value)}
                   {...field}
                 ></TextField>
               )}
@@ -196,7 +190,7 @@ const Register = () => {
                         : 'Confirm Password is Required'
                       : ''
                   }
-                  // onChange={(e) => setPassword(e.target.value)}
+                  // onChange={(e) => setConfirmPassword(e.target.value)}
                   {...field}
                 ></TextField>
               )}
@@ -204,6 +198,17 @@ const Register = () => {
           </ListItem>
 
           {/* <ListItem>
+            <TextField
+              variant="outlined"
+              fullWidth
+              id="name"
+              label="Name"
+              inputProps={{ type: 'text' }}
+              onChange={(e) => setName(e.target.value)}
+            ></TextField>
+          </ListItem>
+
+          <ListItem>
             <TextField
               variant="outlined"
               fullWidth

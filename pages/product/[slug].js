@@ -128,7 +128,7 @@ const ProductScreen = (props) => {
                   color="primary"
                   onClick={addToCartHandler}
                 >
-                  <Typography variant="button">Add to Cart</Typography>
+                  Add to Cart
                 </Button>
               </ListItem>
             </List>
