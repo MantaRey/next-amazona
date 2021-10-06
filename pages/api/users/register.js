@@ -14,8 +14,19 @@ handler.post(async (req, res) => {
     password: bcrypt.hashSync(req.body.password),
     isAdmin: false,
   });
-  const user = await newUser.save();
-  await db.disconnect();
+  let user;
+  try {
+    user = await newUser.save();
+    await db.disconnect();
+  } catch (err) {
+    await db.disconnect();
+    if (err.code === 11000) {
+      res.status(401).send({
+        message:
+          'The Email provided is already tied to an Account. Please try another or Reset your password.',
+      });
+    }
+  }
   const token = signToken(user);
   res.send({
     token,
