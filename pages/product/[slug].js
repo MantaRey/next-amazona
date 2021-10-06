@@ -22,7 +22,6 @@ import { Store } from '../../utils/store';
 const ProductScreen = (props) => {
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
-  const { cart } = state;
   const { product } = props;
   const classes = useStyles();
   /*
