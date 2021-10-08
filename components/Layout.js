@@ -97,6 +97,9 @@ const Layout = ({ description, title, children }) => {
               ></Switch>
               <NextLink href="/cart" passHref>
                 <Link>
+                  {/* This cart segment is throwing a warning that this should 
+              basically be done on server side in useEffect andn not on 
+              client side, can mess up restoration */}
                   {cart.cartItems.length > 0 ? (
                     <Badge
                       color="secondary"
@@ -109,6 +112,9 @@ const Layout = ({ description, title, children }) => {
                   )}
                 </Link>
               </NextLink>
+              {/* This userInfo segment is throwing a warning that this should 
+              basically be done on server side in useEffect andn not on 
+              client side, can mess up restoration */}
               {userInfo ? (
                 <>
                   <Button
