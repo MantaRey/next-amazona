@@ -99,7 +99,7 @@ const CartScreen = () => {
                         </NextLink>
                       </TableCell>
 
-                      <TableCell>
+                      <TableCell align="right">
                         <Select
                           value={item.quantity}
                           onChange={(e) =>
@@ -114,7 +114,7 @@ const CartScreen = () => {
                         </Select>
                       </TableCell>
 
-                      <TableCell>${item.price}</TableCell>
+                      <TableCell align="right">${item.price}</TableCell>
 
                       <TableCell align="right">
                         <Button

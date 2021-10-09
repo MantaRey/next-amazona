@@ -20,15 +20,17 @@ const Payment = () => {
   const { state, dispatch } = useContext(Store);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [paymentMethod, setPaymentMethod] = useState('');
-  const { cart } = state;
+  const { userInfo, cart } = state;
 
   useEffect(() => {
-    if (!cart.shippingAddress) {
+    if (!userInfo) {
+      router.push('/login?redirect=/payment');
+    } else if (!cart.shippingAddress) {
       router.push('/shipping');
     } else {
       setPaymentMethod(cart.paymentMethod || '');
     }
-  }, [router, cart.shippingAddress, cart.paymentMethod]);
+  }, [router, userInfo, cart.shippingAddress, cart.paymentMethod]);
 
   const submitHandler = (e) => {
     closeSnackbar();
@@ -37,7 +39,7 @@ const Payment = () => {
       enqueueSnackbar('Payment method is required', { variant: 'error' });
     } else {
       dispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethod });
-      router.push('/placeorder');
+      router.push('/place-order');
     }
   };
 

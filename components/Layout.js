@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
 import {
@@ -72,6 +72,9 @@ const Layout = ({ description, title, children }) => {
     dispatch({ type: 'USER_LOGOUT' });
     Cookies.remove('userInfo');
     Cookies.remove('cartItems');
+    Cookies.remove('shippingAddress');
+    Cookies.remove('paymentMethod');
+    Cookies.set('darkMode', 'OFF');
     router.push('/');
   };
   return (

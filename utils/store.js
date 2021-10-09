@@ -69,7 +69,8 @@ const reducer = (state, action) => {
       return {
         ...state,
         userInfo: null,
-        cart: { ...state.cart, cartItems: [] },
+        darkMode: false,
+        cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
       };
     default:
       return state;
