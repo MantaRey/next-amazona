@@ -26,7 +26,6 @@ import CheckoutWizard from '../components/CheckoutWizard';
 import { useSnackbar } from 'notistack';
 import { getError } from '../utils/error';
 import axios from 'axios';
-import Cookies from 'js-cookie';
 
 const PlaceOrder = () => {
   const { state, dispatch } = useContext(Store);
@@ -73,7 +72,6 @@ const PlaceOrder = () => {
         }
       );
       dispatch({ type: 'CART_CLEAR' });
-      Cookies.remove('cartItems');
       setLoading(false);
       router.push(`/order/${data._id}`);
     } catch (err) {
@@ -92,10 +90,10 @@ const PlaceOrder = () => {
     if (cartItems.length === 0) {
       router.push('/cart');
     }
-  }, [userInfo, cartItems, paymentMethod, router]);
+  }, [userInfo, paymentMethod, cartItems, router]);
 
   return (
-    <Layout title="Shopping Cart">
+    <Layout title="Place Order">
       <CheckoutWizard activeStep={3}></CheckoutWizard>
       <Typography component="h1" variant="h1">
         Place Order

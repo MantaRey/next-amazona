@@ -70,11 +70,6 @@ const Layout = ({ description, title, children }) => {
   const logoutClickHandler = () => {
     setAnchorEl(null);
     dispatch({ type: 'USER_LOGOUT' });
-    Cookies.remove('userInfo');
-    Cookies.remove('cartItems');
-    Cookies.remove('shippingAddress');
-    Cookies.remove('paymentMethod');
-    Cookies.set('darkMode', 'OFF');
     router.push('/');
   };
   return (
