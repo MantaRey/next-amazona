@@ -18,7 +18,7 @@ const Shipping = () => {
   const { state, dispatch } = useContext(Store);
   const {
     userInfo,
-    cart: { shippingAddress },
+    cart: { shippingAddress, cartItems },
   } = state;
   const {
     handleSubmit,
@@ -29,12 +29,15 @@ const Shipping = () => {
   useEffect(() => {
     if (!userInfo) {
       router.push('/login?redirect=/shipping');
+    } else if (cartItems.length === 0) {
+      router.push('/cart');
+    } else {
+      setValue('fullName', shippingAddress.fullName);
+      setValue('address', shippingAddress.address);
+      setValue('city', shippingAddress.city);
+      setValue('postalCode', shippingAddress.postalCode);
+      setValue('country', shippingAddress.country);
     }
-    setValue('fullName', shippingAddress.fullName);
-    setValue('address', shippingAddress.address);
-    setValue('city', shippingAddress.city);
-    setValue('postalCode', shippingAddress.postalCode);
-    setValue('country', shippingAddress.country);
   }, [
     router,
     userInfo,
@@ -44,6 +47,7 @@ const Shipping = () => {
     shippingAddress.city,
     shippingAddress.postalCode,
     shippingAddress.country,
+    cartItems,
   ]);
 
   const classes = useStyles();
@@ -221,6 +225,16 @@ const Shipping = () => {
           <ListItem>
             <Button variant="contained" type="submit" fullWidth color="primary">
               Continue
+            </Button>
+          </ListItem>
+          <ListItem>
+            <Button
+              fullWidth
+              type="button"
+              variant="contained"
+              onClick={() => router.push('/cart')}
+            >
+              Back
             </Button>
           </ListItem>
         </List>

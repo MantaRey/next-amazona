@@ -1,7 +1,7 @@
 import nextConnect from 'next-connect';
-import Order from '../../../models/Order';
-import db from '../../../utils/db';
-import { isAuth } from '../../../utils/auth';
+import Order from '../../../../models/Order';
+import db from '../../../../utils/db';
+import { isAuth } from '../../../../utils/auth';
 
 const handler = nextConnect();
 //This isAuth check makes sure that only an Authorized and Autheticated User can access their Order info

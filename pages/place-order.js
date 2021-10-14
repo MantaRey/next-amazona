@@ -83,14 +83,13 @@ const PlaceOrder = () => {
   useEffect(() => {
     if (!userInfo) {
       router.push('/login?redirect=/place-order');
-    }
-    if (!paymentMethod) {
+    } else if (!paymentMethod) {
       router.push('/payment');
     }
-    if (cartItems.length === 0) {
-      router.push('/cart');
-    }
-  }, [userInfo, paymentMethod, cartItems, router]);
+    // if (cartItems.length === 0) {
+    //   router.push('/cart');
+    // }
+  }, [userInfo, paymentMethod, router]);
 
   return (
     <Layout title="Place Order">

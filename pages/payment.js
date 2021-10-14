@@ -23,14 +23,24 @@ const Payment = () => {
   const { userInfo, cart } = state;
 
   useEffect(() => {
+    console.log(userInfo);
+    console.log(cart);
     if (!userInfo) {
       router.push('/login?redirect=/payment');
     } else if (!cart.shippingAddress) {
       router.push('/shipping');
+    } else if (cart.cartItems.length === 0) {
+      router.push('/cart');
     } else {
       setPaymentMethod(cart.paymentMethod || '');
     }
-  }, [router, userInfo, cart.shippingAddress, cart.paymentMethod]);
+  }, [
+    router,
+    userInfo,
+    cart.shippingAddress,
+    cart.paymentMethod,
+    cart.cartItems.length,
+  ]);
 
   const submitHandler = (e) => {
     closeSnackbar();
