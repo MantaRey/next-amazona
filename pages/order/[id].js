@@ -79,8 +79,7 @@ const Order = ({ params }) => {
 
   useEffect(() => {
     if (!userInfo) {
-      router.push('/login');
-      // return router.push('/login');
+      return router.push('/login');
     }
     const fetchOrder = async () => {
       try {

@@ -23,8 +23,6 @@ const Payment = () => {
   const { userInfo, cart } = state;
 
   useEffect(() => {
-    console.log(userInfo);
-    console.log(cart);
     if (!userInfo) {
       router.push('/login?redirect=/payment');
     } else if (!cart.shippingAddress) {

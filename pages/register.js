@@ -15,6 +15,7 @@ import { Store } from '../utils/store';
 import { useRouter } from 'next/router';
 import { Controller, useForm } from 'react-hook-form';
 import { useSnackbar } from 'notistack';
+import { getError } from '../utils/error';
 
 const Register = () => {
   const router = useRouter();
@@ -57,12 +58,7 @@ const Register = () => {
       });
       dispatch({ type: 'USER_LOGIN', payload: data });
     } catch (err) {
-      enqueueSnackbar(
-        err.response.data ? err.response.data.message : err.message,
-        {
-          variant: 'error',
-        }
-      );
+      enqueueSnackbar(getError(err), { variant: 'error' });
       // alert(err.response.data ? err.response.data.message : err.message);
     }
   };
