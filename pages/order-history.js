@@ -85,7 +85,7 @@ const OrderHistory = () => {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Order
+                  Orders
                 </Typography>
               </ListItem>
               <ListItem>
