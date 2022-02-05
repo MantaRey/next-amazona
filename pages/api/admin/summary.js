@@ -2,13 +2,13 @@ import nextConnect from 'next-connect';
 import Order from '../../../models/Order';
 import Product from '../../../models/Product';
 import User from '../../../models/User';
-import { isAuth } from '../../../utils/auth';
+import { isAuth, isAdmin } from '../../../utils/auth';
 import db from '../../../utils/db';
 import { onError } from '../../../utils/error';
 
 const handler = nextConnect({ onError });
 
-handler.use(isAuth);
+handler.use(isAuth, isAdmin);
 
 handler.get(async (req, res) => {
   await db.connect();
@@ -34,7 +34,6 @@ handler.get(async (req, res) => {
       },
     },
   ]);
-  // _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
   res.send({ ordersCount, productsCount, usersCount, ordersPrice, salesData });
 });
 
