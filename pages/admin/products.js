@@ -32,7 +32,7 @@ function reducer(state, action) {
       return {
         ...state,
         loading: false,
-        orders: action.payload.orders,
+        products: action.payload.products,
         error: '',
       };
     case 'FETCH_FAIL':
@@ -46,9 +46,9 @@ const AdminDashboard = () => {
   const { state } = useContext(Store);
   const router = useRouter();
   const { userInfo } = state;
-  const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
     loading: true,
-    orders: [],
+    products: [],
     error: '',
   });
   const classes = useStyles();
@@ -60,7 +60,7 @@ const AdminDashboard = () => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/admin/orders`, {
+        const { data } = await axios.get(`/api/admin/products`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -71,7 +71,7 @@ const AdminDashboard = () => {
     fetchData();
   }, [userInfo, router]);
   return (
-    <Layout title="Orders">
+    <Layout title="Products">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
           <List>
@@ -81,12 +81,12 @@ const AdminDashboard = () => {
               </ListItem>
             </NextLink>
             <NextLink href="/admin/orders" passHref>
-              <ListItem selected button component="a">
+              <ListItem button component="a">
                 <ListItemText primary="Orders"></ListItemText>
               </ListItem>
             </NextLink>
             <NextLink href="/admin/products" passHref>
-              <ListItem button component="a">
+              <ListItem selected button component="a">
                 <ListItemText primary="Products"></ListItemText>
               </ListItem>
             </NextLink>
@@ -98,7 +98,7 @@ const AdminDashboard = () => {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Order History
+                  Inventory
                 </Typography>
               </ListItem>
               <ListItem>
@@ -112,37 +112,37 @@ const AdminDashboard = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell>ID</TableCell>
-                          <TableCell>USER</TableCell>
-                          <TableCell>DATE</TableCell>
-                          <TableCell>TOTAL</TableCell>
-                          <TableCell>PAID</TableCell>
-                          <TableCell>DELIVERED</TableCell>
-                          <TableCell>ACTION</TableCell>
+                          <TableCell>NAME</TableCell>
+                          <TableCell>PRICE</TableCell>
+                          <TableCell>CATEGORY</TableCell>
+                          <TableCell>COUNT</TableCell>
+                          <TableCell>RATING</TableCell>
+                          <TableCell>ACTIONS</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
-                        {orders.map((order) => (
-                          <TableRow key={order._id}>
-                            <TableCell>{order._id.substring(20, 24)}</TableCell>
+                        {products.map((product) => (
+                          <TableRow key={product._id}>
                             <TableCell>
-                              {order.user ? order.user.name : 'DELETED USER'}
+                              {product._id.substring(20, 24)}
                             </TableCell>
-                            <TableCell>{order.createdAt}</TableCell>
-                            <TableCell>${order.totalPrice}</TableCell>
+                            <TableCell>{product.name}</TableCell>
+                            <TableCell>${product.price}</TableCell>
+                            <TableCell>{product.category}</TableCell>
+                            <TableCell>{product.countInStock}</TableCell>
+                            <TableCell>{product.rating}</TableCell>
                             <TableCell>
-                              {order.isPaid
-                                ? `Paid on ${order.paidAt}`
-                                : 'Not Paid'}
-                            </TableCell>
-                            <TableCell>
-                              {order.isDelivered
-                                ? `Delivered on ${order.paidAt}`
-                                : 'Not Delivered'}
-                            </TableCell>
-                            <TableCell>
-                              <NextLink href={`/order/${order._id}`} passHref>
-                                <Button variant="contained">Details</Button>
-                              </NextLink>
+                              <NextLink
+                                href={`/admin/product/${product._id}`}
+                                passHref
+                              >
+                                <Button size="small" variant="contained">
+                                  Edit
+                                </Button>
+                              </NextLink>{' '}
+                              <Button size="small" variant="contained">
+                                Delete
+                              </Button>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -160,5 +160,5 @@ const AdminDashboard = () => {
 };
 
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, OrderHistory does not need to be Indexed, it is personalized for each user
+//Instead we want it on Client-Side where SEO does not matter, ProductHistory does not need to be Indexed, it is personalized for each user
 export default dynamic(() => Promise.resolve(AdminDashboard), { ssr: false });
