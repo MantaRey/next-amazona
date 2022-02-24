@@ -88,7 +88,6 @@ const AdminDashboard = () => {
     <Layout title="Order History">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          {/* <Card className={classes.section}> */}
           <List>
             <NextLink href="/admin/dashboard" passHref>
               <ListItem selected button component="a">
@@ -106,7 +105,6 @@ const AdminDashboard = () => {
               </ListItem>
             </NextLink>
           </List>
-          {/* </Card> */}
         </Grid>
         <Grid item md={9} xs={12}>
           <Card className={classes.section}>
