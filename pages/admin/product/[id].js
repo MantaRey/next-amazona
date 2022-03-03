@@ -36,6 +36,17 @@ function reducer(state, action) {
       return { ...state, loadingUpdate: false, errorUpdate: '' };
     case 'UPDATE_FAIL':
       return { ...state, loadingUpdate: false, errorUpdate: action.payload };
+    case 'UPLOAD_REQUEST':
+      return { ...state, loadingUpload: true, errorUpdate: '' };
+    case 'UPLOAD_SUCCESS':
+      return {
+        ...state,
+        loadingUpload: false,
+        image: action.payload,
+        errorUpload: '',
+      };
+    case 'UPLOAD_FAIL':
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
     default:
       return state;
   }
@@ -44,15 +55,16 @@ function reducer(state, action) {
 const ProductEdit = ({ params }) => {
   const productId = params.id;
   const { state } = useContext(Store);
-  const [{ loading, product, error, loadingUpdate }, dispatch] = useReducer(
-    reducer,
-    {
-      loading: true,
-      product: {},
-      error: '',
-      loadingUpdate: false,
-    }
-  );
+  const [
+    { loading, product, image, error, loadingUpdate, loadingUpload },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    product: {},
+    image: '',
+    error: '',
+    loadingUpdate: false,
+  });
   const {
     handleSubmit,
     control,
@@ -98,6 +110,39 @@ const ProductEdit = ({ params }) => {
       setValue('description', product.description ? product.description : '');
     }
   }, [setValue, product]);
+
+  useEffect(() => {
+    if (image != '') {
+      setValue('image', image);
+    }
+  }, [setValue, image]);
+
+  //Initiates the uploading of a new file (image) for the product by involking an api. Upon success, the image field is set to the url recieved from Cloudinary
+  const uploadHandler = async (e) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
+    //bodyFormData contains the file to upload
+    try {
+      dispatch({ type: 'UPLOAD_REQUEST' });
+      console.log('File Upload Requested');
+      const { data } = await axios.post('/api/admin/upload', bodyFormData, {
+        headers: {
+          'Content-Type': 'mulitpart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      //Content-Type setting allows sending a file through AJAX request
+      console.log('Successful File Upload');
+      console.log(data);
+      dispatch({ type: 'UPLOAD_SUCCESS', payload: data.secure_url });
+      // setValue('image', data.secure_url);
+      enqueueSnackbar('File uploaded successfully', { variant: 'success' });
+    } catch (err) {
+      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+      enqueueSnackbar(getError(err, { variant: 'error' }));
+    }
+  };
 
   const submitHandler = async ({
     name,
@@ -263,6 +308,13 @@ const ProductEdit = ({ params }) => {
                           ></TextField>
                         )}
                       ></Controller>
+                    </ListItem>
+                    <ListItem>
+                      <Button variant="contained" component="label">
+                        Upload File
+                        <input type="file" onChange={uploadHandler} hidden />
+                      </Button>
+                      {loadingUpload && <CircularProgress />}
                     </ListItem>
 
                     <ListItem>
