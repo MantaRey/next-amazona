@@ -22,7 +22,11 @@ const isAuth = async (req, res, next) => {
     const token = authorization.slice(7, authorization.length);
     jwt.verify(token, process.env.JWT_SECRET, (err, decode) => {
       if (err) {
-        res.status(401).send({ message: 'Token is not valid' });
+        res
+          .status(401)
+          .send({
+            message: 'Token is not valid. Try logging out and logging back in.',
+          });
       } else {
         req.user = decode;
         next();

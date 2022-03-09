@@ -6,6 +6,7 @@ import db from '../../../../../utils/db';
 const handler = nc();
 handler.use(isAuth, isAdmin);
 
+//Returns a Product from the DB based on id. Used to get a single Product's details. Application - Product Details Page & Product Edit Form
 handler.get(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
@@ -13,6 +14,7 @@ handler.get(async (req, res) => {
   res.send(product);
 });
 
+//Saves edited Product details to the DB. Used to update a single Product's details. Application - Product Edit Form
 handler.put(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);
@@ -28,6 +30,20 @@ handler.put(async (req, res) => {
     await product.save();
     await db.disconnect();
     res.send({ message: 'Product Updated Successfully' });
+  } else {
+    await db.disconnect();
+    res.statusCode(404).send({ message: 'Product Not Found' });
+  }
+});
+
+//Deletes a Product from the DB based on id. Used to delete a single Product. Application - Products / Inventory Page
+handler.delete(async (req, res) => {
+  await db.connect();
+  const product = await Product.findById(req.query.id);
+  if (product) {
+    await product.remove();
+    await db.disconnect();
+    res.send({ message: 'Product Deleted' });
   } else {
     await db.disconnect();
     res.statusCode(404).send({ message: 'Product Not Found' });
