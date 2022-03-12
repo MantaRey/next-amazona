@@ -1,3 +1,9 @@
+/*
+  Admin Dashboard Page -- /admin/dashboard
+  Admin can view Website Analytics such as Total number of Sales, Orders, Products, and Users on their platform
+  Admin can view Sales Chart with yyyy-mm (x-axis) and $$$ (y-axis) to see each month's profits
+*/
+
 import {
   Button,
   Card,
@@ -102,6 +108,11 @@ const AdminDashboard = () => {
             <NextLink href="/admin/products" passHref>
               <ListItem button component="a">
                 <ListItemText primary="Products"></ListItemText>
+              </ListItem>
+            </NextLink>
+            <NextLink href="/admin/users" passHref>
+              <ListItem button component="a">
+                <ListItemText primary="Users"></ListItemText>
               </ListItem>
             </NextLink>
           </List>
@@ -219,5 +230,5 @@ const AdminDashboard = () => {
 };
 
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, OrderHistory does not need to be Indexed, it is personalized for each user
+//Instead we want it on Client-Side where SEO does not matter, Website Analytics do not need to be Indexed, it is Admin only
 export default dynamic(() => Promise.resolve(AdminDashboard), { ssr: false });

@@ -1,3 +1,7 @@
+/*
+  Admin Products API -- /api/admin/products
+*/
+
 import nc from 'next-connect';
 import { isAdmin, isAuth } from '../../../../utils/auth';
 import Product from '../../../../models/Product';
@@ -6,13 +10,15 @@ import db from '../../../../utils/db';
 const handler = nc();
 handler.use(isAuth, isAdmin);
 
+//Returns all Products from the DB. Application - Admin Products Page
 handler.get(async (req, res) => {
   await db.connect();
-  const products = await Product.find({}); //Empty parameter means get the Products of all users
+  const products = await Product.find({}); //Empty parameter -> get all Products
   await db.disconnect();
   res.send({ products });
 });
 
+//Creates a new Product in DB with default values to be updated by Admin. Application - Admin Products Page
 handler.post(async (req, res) => {
   await db.connect();
   const newProduct = new Product({

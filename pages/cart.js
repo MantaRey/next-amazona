@@ -34,7 +34,6 @@ const CartScreen = () => {
     const { data } = await axios.get(
       `http://localhost:3000/api/products/${item._id}`
     );
-    // console.log(data);
     if (data.countInStock <= 0) {
       window.alert('Sorry, the Product is out of Stock.');
       return;
@@ -57,7 +56,7 @@ const CartScreen = () => {
         <div>
           Cart is Empty.{' '}
           <NextLink href="/" passHref>
-            <Link>Go Shopping.</Link>
+            <Link>Go Shopping!</Link>
           </NextLink>
         </div>
       ) : (

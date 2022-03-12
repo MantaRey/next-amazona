@@ -1,3 +1,9 @@
+/*
+  Admin Orders Page -- /admin/orders
+  Admin can view all Order History and look at specific Order details
+  Admin can click "Details" to go to it's specific Order Information Page
+*/
+
 import {
   Button,
   Card,
@@ -42,7 +48,7 @@ function reducer(state, action) {
   }
 }
 
-const AdminDashboard = () => {
+const AdminOrders = () => {
   const { state } = useContext(Store);
   const router = useRouter();
   const { userInfo } = state;
@@ -90,8 +96,12 @@ const AdminDashboard = () => {
                 <ListItemText primary="Products"></ListItemText>
               </ListItem>
             </NextLink>
+            <NextLink href="/admin/users" passHref>
+              <ListItem button component="a">
+                <ListItemText primary="Users"></ListItemText>
+              </ListItem>
+            </NextLink>
           </List>
-          {/* </Card> */}
         </Grid>
         <Grid item md={9} xs={12}>
           <Card className={classes.section}>
@@ -160,5 +170,5 @@ const AdminDashboard = () => {
 };
 
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, OrderHistory does not need to be Indexed, it is personalized for each user
-export default dynamic(() => Promise.resolve(AdminDashboard), { ssr: false });
+//Instead we want it on Client-Side where SEO does not matter, List of Orders does not need to be Indexed, it is only for Admin
+export default dynamic(() => Promise.resolve(AdminOrders), { ssr: false });

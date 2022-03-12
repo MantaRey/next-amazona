@@ -1,3 +1,9 @@
+/*
+  Admin Products Page -- /admin/product/[id]
+  Admin can Edit the details of a specific Product
+  *Used for both Updating an already existing Product and a newly created Product
+*/
+
 import {
   Button,
   Card,
@@ -95,6 +101,7 @@ const ProductEdit = ({ params }) => {
     fetchData();
   }, [userInfo, productId, router]);
 
+  //If product is not empty (fetching data is successful), use contents from database to pre-fill form fields with original data
   useEffect(() => {
     if (product) {
       setValue('name', product.name ? product.name : '');
@@ -144,6 +151,7 @@ const ProductEdit = ({ params }) => {
     }
   };
 
+  //Function used to initiate Admin request to Update an already existing or new Product.
   const submitHandler = async ({
     name,
     slug,
@@ -198,6 +206,11 @@ const ProductEdit = ({ params }) => {
             <NextLink href="/admin/products" passHref>
               <ListItem selected button component="a">
                 <ListItemText primary="Products"></ListItemText>
+              </ListItem>
+            </NextLink>
+            <NextLink href="/admin/users" passHref>
+              <ListItem button component="a">
+                <ListItemText primary="Users"></ListItemText>
               </ListItem>
             </NextLink>
           </List>

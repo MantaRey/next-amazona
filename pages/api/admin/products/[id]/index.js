@@ -1,3 +1,7 @@
+/*
+  Admin Products API -- /api/admin/products/[id]
+*/
+
 import nc from 'next-connect';
 import { isAdmin, isAuth } from '../../../../../utils/auth';
 import Product from '../../../../../models/Product';
@@ -36,7 +40,7 @@ handler.put(async (req, res) => {
   }
 });
 
-//Deletes a Product from the DB based on id. Used to delete a single Product. Application - Products / Inventory Page
+//Deletes a Product from the DB based on id. Used to delete a single Product. Application - Admin Products / Inventory Page
 handler.delete(async (req, res) => {
   await db.connect();
   const product = await Product.findById(req.query.id);

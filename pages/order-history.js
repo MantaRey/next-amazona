@@ -2,6 +2,7 @@ import {
   Card,
   CircularProgress,
   Grid,
+  Link,
   List,
   ListItem,
   ListItemText,
@@ -39,7 +40,7 @@ const OrderHistory = () => {
   const { userInfo } = state;
   const [{ loading, error, orders }, dispatch] = useReducer(reducer, {
     loading: true,
-    orders: {},
+    orders: [],
     error: '',
   });
   const classes = useStyles();
@@ -61,6 +62,7 @@ const OrderHistory = () => {
     };
     fetchOrders();
   }, [userInfo, router]);
+
   return (
     <Layout title="Order History">
       <Grid container spacing={1}>
@@ -136,6 +138,17 @@ const OrderHistory = () => {
               </ListItem>
             </List>
           </Card>
+          {orders[0] ? (
+            ''
+          ) : (
+            <div>
+              Looks like you do not have any past orders. Let&apos;s go shopping
+              and change that for you!{' '}
+              <NextLink href="/" passHref>
+                <Link>Go Shopping!</Link>
+              </NextLink>
+            </div>
+          )}
         </Grid>
       </Grid>
     </Layout>
