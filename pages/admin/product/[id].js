@@ -456,5 +456,5 @@ export async function getServerSideProps({ params }) {
   };
 }
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, ProductEdit does not need to be Indexed, it is personalized for each Admin user
+//Instead we want it on Client-Side where SEO does not matter, Product Edit Page does not need to be Indexed, it is Admin only
 export default dynamic(() => Promise.resolve(ProductEdit), { ssr: false });
