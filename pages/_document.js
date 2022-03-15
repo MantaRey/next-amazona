@@ -9,7 +9,7 @@ import { ServerStyleSheets } from '@material-ui/core/styles';
   Error:
   "next/document should not be imported outside of pages/_document.js. See https://nextjs.org/docs/messages/no-document-import-in-page."
   This Error makes no sense... I am inside of pages/_document.js
-  */
+*/
 
 export default class MyDocument extends Document {
   redner() {
