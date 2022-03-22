@@ -9,7 +9,6 @@ import {
   Button,
 } from '@material-ui/core';
 import NextLink from 'next/link';
-// import data from '../utils/data';
 import Layout from '../components/Layout';
 import db from '../utils/db';
 import Product from '../models/Product';
@@ -24,10 +23,7 @@ export default function Home(props) {
   const { state, dispatch } = useContext(Store);
 
   const addToCartHandler = async (product) => {
-    const { data } = await axios.get(
-      `http://localhost:3000/api/products/${product._id}`
-    );
-    // console.log(data);
+    const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock <= 0) {
       window.alert('Sorry, the Product is out of Stock.');
       return;
