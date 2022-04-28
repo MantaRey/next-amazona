@@ -1,3 +1,11 @@
+/*
+This is Amazona's Home Page (Landing Page for the Website) -- /
+Displays all the Products in the Inventory
+User can Select a Product to view more Details, or Add Product to their Cart
+User can log into or out of their Account, Access Account Details, View their Cart
+User can toggle website theme
+*/
+
 import {
   Grid,
   Card,
@@ -8,6 +16,7 @@ import {
   CardActions,
   Button,
 } from '@material-ui/core';
+import Rating from '@material-ui/lab/Rating';
 import NextLink from 'next/link';
 import Layout from '../components/Layout';
 import db from '../utils/db';
@@ -56,6 +65,7 @@ export default function Home(props) {
                     ></CardMedia>
                     <CardContent>
                       <Typography>{product.name}</Typography>
+                      <Rating value={product.rating} readOnly></Rating>
                     </CardContent>
                   </CardActionArea>
                 </NextLink>
@@ -82,7 +92,7 @@ export default function Home(props) {
 //lean function tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO(Plain Object)
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find({}).lean();
+  const products = await Product.find({}, '-reviews').lean();
   await db.disconnect();
   //this line converts the unserializable values in each item in products to only primary data types, so that they can be serialized to JSON
   products.map((product) => db.convertDocToObj(product));
