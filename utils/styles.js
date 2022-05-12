@@ -5,7 +5,7 @@ Similar format as normal CSS except this uses camelCase
 Ex: Css -> background-color         Material-ui -> backgroundColor
 */
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   navbar: {
     background: '#203040',
     color: '#fffff',
@@ -63,6 +63,35 @@ const useStyles = makeStyles({
   toolbar: {
     justifyContent: 'space-between',
   },
-});
+  menuButton: {
+    padding: 0,
+  },
+  searchSection: {
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'flex',
+    },
+  },
+  searchForm: {
+    border: '1px solid #ffffff',
+    backgroundColor: '#ffffff',
+    borderRadius: 5,
+  },
+  searchInput: {
+    paddingLeft: 5,
+    color: '#000000',
+    '& ::placeholder': {
+      color: '#606060',
+    },
+  },
+  iconButton: {
+    backgroundColor: '#f8c040',
+    padding: 5,
+    borderRadius: '0 5px 5px 0',
+    '& span': {
+      color: '#000000',
+    },
+  },
+}));
 
 export default useStyles;
