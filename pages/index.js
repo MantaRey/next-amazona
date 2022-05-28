@@ -6,21 +6,27 @@ User can log into or out of their Account, Access Account Details, View their Ca
 User can toggle website theme
 */
 
-import { Grid } from '@material-ui/core';
+/* eslint-disable @next/next/no-img-element */
+import { Grid, Link, Typography } from '@material-ui/core';
 import Layout from '../components/Layout';
 import db from '../utils/db';
 import Product from '../models/Product';
 import { useRouter } from 'next/router';
 import { useContext } from 'react';
 import { Store } from '../utils/store';
+import NextLink from 'next/link';
 import axios from 'axios';
 import ProductItem from '../components/ProductItem';
+import Carousel from 'react-material-ui-carousel';
+import useStyles from '../utils/styles';
 
 export default function Home(props) {
-  const { products } = props;
+  const { topRatedProducts, featuredProducts } = props;
   const router = useRouter();
   const { state, dispatch } = useContext(Store);
+  const classes = useStyles();
 
+  //Function adds Product to the User's Cart || Function adds to the quantity of the Product in the User's Cart
   const addToCartHandler = async (product) => {
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock <= 0) {
@@ -40,19 +46,48 @@ export default function Home(props) {
   };
   return (
     <Layout>
-      <div>
-        <h1>Products</h1>
-        <Grid container spacing={3}>
-          {products.map((product) => (
-            <Grid item md={4} key={product.name}>
-              <ProductItem
-                product={product}
-                addToCartHandler={addToCartHandler}
+      <Carousel
+        className={classes.mt1}
+        animation="slide"
+        swipe="true"
+        navButtonsProps={{
+          style: {
+            backgroundColor: 'cornflowerblue',
+            color: 'white',
+          },
+        }}
+        indicatorIconButtonProps={{ style: { padding: '0.625rem' } }}
+        activeIndicatorIconButtonProps={{
+          style: { color: 'cornflowerblue' },
+        }}
+      >
+        {featuredProducts.map((product) => (
+          <NextLink
+            key={product._id}
+            href={`/product/${product.slug}`}
+            passHref
+          >
+            <Link>
+              <img
+                src={product.featuredImage}
+                alt={product.name}
+                className={classes.featuredImage}
               />
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+            </Link>
+          </NextLink>
+        ))}
+      </Carousel>
+      <Typography variant="h2">Popular Products</Typography>
+      <Grid container spacing={3}>
+        {topRatedProducts.map((product) => (
+          <Grid item md={4} key={product.name}>
+            <ProductItem
+              product={product}
+              addToCartHandler={addToCartHandler}
+            />
+          </Grid>
+        ))}
+      </Grid>
     </Layout>
   );
 }
@@ -61,13 +96,26 @@ export default function Home(props) {
 //lean function tells Mongoose to skip instantiating a full Mongoose document and just give you the POJO(Plain Object)
 export async function getServerSideProps() {
   await db.connect();
-  const products = await Product.find({}, '-reviews').lean();
+  //Creates list of only featured Products
+  const featuredProductsDocs = await Product.find(
+    { isFeatured: true },
+    '-reviews'
+  )
+    .lean()
+    .limit(3);
+  //Creates list of top 6 highest rated Products
+  const topRatedProductsDocs = await Product.find({}, '-reviews')
+    .lean()
+    .sort({
+      rating: -1,
+    })
+    .limit(6);
   await db.disconnect();
-  //this line converts the unserializable values in each item in products to only primary data types, so that they can be serialized to JSON
-  products.map((product) => db.convertDocToObj(product));
   return {
     props: {
-      products,
+      featuredProducts: featuredProductsDocs.map(db.convertDocToObj),
+      topRatedProducts: topRatedProductsDocs.map(db.convertDocToObj),
+      //this line converts the unserializable values in each item in products to only primary data types, so that they can be serialized to JSON
     },
   };
 }

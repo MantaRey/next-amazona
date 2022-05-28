@@ -251,9 +251,15 @@ const Search = (props) => {
             ))}
           </Grid>
           <Pagination
-            className={classes.mt1}
+            className={`${classes.mt1}`}
             defaultPage={parseInt(query.page || '1')}
             count={pages}
+            variant="outlined"
+            shape="rounded"
+            color="primary"
+            size="small"
+            showFirstButton
+            showLastButton
             onChange={pageHandler}
           ></Pagination>
         </Grid>

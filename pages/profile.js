@@ -168,7 +168,7 @@ const Profile = () => {
                         defaultValue=""
                         rules={{
                           validate: (value) =>
-                            value === '' ||
+                            value !== '' ||
                             value.length > 5 ||
                             'Password length must be more than 5 characters',
                         }}
@@ -198,7 +198,7 @@ const Profile = () => {
                         defaultValue=""
                         rules={{
                           validate: (value) =>
-                            value === '' ||
+                            value !== '' ||
                             value.length > 5 ||
                             'Confirm Password length must be more than 5 characters',
                         }}
