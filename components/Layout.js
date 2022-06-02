@@ -27,6 +27,8 @@ import {
 import MenuIcon from '@material-ui/icons/Menu';
 import CancelIcon from '@material-ui/icons/Cancel';
 import SearchIcon from '@material-ui/icons/Search';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import useStyles from '../utils/styles';
 import { Store } from '../utils/store';
 import { getError } from '../utils/error';
@@ -65,6 +67,12 @@ const Layout = ({ description, title, children }) => {
       },
       secondary: {
         main: '#208080',
+      },
+      success: {
+        main: '#2e7d32',
+      },
+      error: {
+        main: '#d32f2f',
       },
     },
   });
@@ -173,21 +181,24 @@ const Layout = ({ description, title, children }) => {
                     </IconButton>
                   </Box>
                 </ListItem>
-                <Divider light />
+                <Divider />
                 {categories.map((category) => (
-                  <NextLink
-                    key={category}
-                    href={`/search?category=${category}`}
-                    passHref
-                  >
-                    <ListItem
-                      button
-                      component="a"
-                      onClick={sidebarCloseHandler}
+                  <>
+                    <NextLink
+                      key={category}
+                      href={`/search?category=${category}`}
+                      passHref
                     >
-                      <ListItemText primary={category}></ListItemText>
-                    </ListItem>
-                  </NextLink>
+                      <ListItem
+                        button
+                        component="a"
+                        onClick={sidebarCloseHandler}
+                      >
+                        <ListItemText primary={category}></ListItemText>
+                      </ListItem>
+                    </NextLink>
+                    <Divider light />
+                  </>
                 ))}
               </List>
             </Drawer>
@@ -209,30 +220,16 @@ const Layout = ({ description, title, children }) => {
                 </IconButton>
               </form>
             </div>
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
               <Switch
                 checked={darkMode}
                 onChange={darkModeChangeHandler}
               ></Switch>
-              <NextLink href="/cart" passHref>
-                <Link>
-                  {/* This cart segment is throwing a warning that this should 
-              basically be done on server side in useEffect andn not on 
-              client side, can mess up restoration */}
-                  <Typography component="span">
-                    {cart.cartItems.length > 0 ? (
-                      <Badge
-                        color="secondary"
-                        badgeContent={cart.cartItems.length}
-                      >
-                        Cart
-                      </Badge>
-                    ) : (
-                      'Cart'
-                    )}
-                  </Typography>
-                </Link>
-              </NextLink>
               {/* This userInfo segment is throwing a warning that this should 
               basically be done on server side in useEffect andn not on 
               client side, can mess up restoration */}
@@ -243,6 +240,7 @@ const Layout = ({ description, title, children }) => {
                     aria-haspopup="true"
                     onClick={loginClickHandler}
                     className={classes.navbarButton}
+                    startIcon={<AccountBoxIcon />}
                   >
                     {userInfo.name}
                   </Button>
@@ -280,10 +278,30 @@ const Layout = ({ description, title, children }) => {
               ) : (
                 <NextLink href="/login" passHref>
                   <Link>
-                    <Typography component="span">Login</Typography>
+                    <AccountBoxIcon />
+                    {/* <Typography component="span">Login</Typography> */}
                   </Link>
                 </NextLink>
               )}
+              <NextLink href="/cart" passHref>
+                <Link>
+                  {/* This cart segment is throwing a warning that this should 
+              basically be done on server side in useEffect andn not on 
+              client side, can mess up restoration */}
+                  <Typography component="span">
+                    {cart.cartItems.length > 0 ? (
+                      <Badge
+                        color="secondary"
+                        badgeContent={cart.cartItems.length}
+                      >
+                        <ShoppingCartIcon />
+                      </Badge>
+                    ) : (
+                      <ShoppingCartIcon />
+                    )}
+                  </Typography>
+                </Link>
+              </NextLink>
             </div>
           </Toolbar>
         </AppBar>

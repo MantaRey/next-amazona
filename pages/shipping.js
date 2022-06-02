@@ -1,10 +1,16 @@
 import {
   Button,
+  InputAdornment,
   List,
   ListItem,
   TextField,
   Typography,
 } from '@material-ui/core';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import HomeIcon from '@mui/icons-material/Home';
+import LocationCityIcon from '@mui/icons-material/LocationCity';
+import NumbersIcon from '@mui/icons-material/Numbers';
+import PublicIcon from '@mui/icons-material/Public';
 import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
@@ -91,6 +97,15 @@ const Shipping = () => {
                         : 'Full Name is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <AccountCircleIcon
+                          sx={{ color: 'action.active', mr: 1 }}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -122,6 +137,13 @@ const Shipping = () => {
                         : 'Address is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <HomeIcon sx={{ color: 'action.active', mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -153,6 +175,15 @@ const Shipping = () => {
                         : 'City is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <LocationCityIcon
+                          sx={{ color: 'action.active', mr: 1 }}
+                        />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -184,6 +215,13 @@ const Shipping = () => {
                         : 'Postal Code is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <NumbersIcon sx={{ color: 'action.active', mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -215,6 +253,13 @@ const Shipping = () => {
                         : 'Country is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <PublicIcon sx={{ color: 'action.active', mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -232,6 +277,7 @@ const Shipping = () => {
               fullWidth
               type="button"
               variant="contained"
+              color="secondary"
               onClick={() => router.push('/cart')}
             >
               Back

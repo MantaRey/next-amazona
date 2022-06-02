@@ -181,7 +181,12 @@ const AdminUsers = () => {
                                 href={`/admin/user/${user._id}`}
                                 passHref
                               >
-                                <Button size="small" variant="contained">
+                                <Button
+                                  color="secondary"
+                                  size="small"
+                                  variant="contained"
+                                  disableElevation
+                                >
                                   Edit
                                 </Button>
                               </NextLink>{' '}
@@ -189,8 +194,10 @@ const AdminUsers = () => {
                                 onClick={() =>
                                   deleteHandler(user._id, user.name, user.email)
                                 }
+                                color="error"
                                 size="small"
                                 variant="contained"
+                                disableElevation
                               >
                                 Delete
                               </Button>

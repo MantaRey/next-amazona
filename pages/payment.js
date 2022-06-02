@@ -94,6 +94,7 @@ const Payment = () => {
               fullWidth
               type="button"
               variant="contained"
+              color="secondary"
               onClick={() => router.push('/shipping')}
             >
               Back

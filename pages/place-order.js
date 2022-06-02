@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   CircularProgress,
+  Divider,
   Grid,
   Link,
   List,
@@ -27,6 +28,17 @@ import { useSnackbar } from 'notistack';
 import { getError } from '../utils/error';
 import axios from 'axios';
 
+//Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+
+  // These options are needed to round to whole numbers if that's what you want.
+  //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+  //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+});
+formatter.format(2500); /* $2,500.00 */
+
 const PlaceOrder = () => {
   const { state, dispatch } = useContext(Store);
   const router = useRouter();
@@ -46,6 +58,7 @@ const PlaceOrder = () => {
     )
   );
   const shippingPrice = itemsPrice > 200 ? 0 : 15;
+  const totalPriceBeforeTax = round2decimal(itemsPrice + shippingPrice);
   const taxPrice = round2decimal(itemsPrice * 0.1);
   const totalPrice = round2decimal(itemsPrice + shippingPrice + taxPrice);
 
@@ -62,6 +75,7 @@ const PlaceOrder = () => {
           paymentMethod,
           itemsPrice,
           shippingPrice,
+          totalPriceBeforeTax,
           taxPrice,
           totalPrice,
         },
@@ -95,7 +109,7 @@ const PlaceOrder = () => {
     <Layout title="Place Order">
       <CheckoutWizard activeStep={3}></CheckoutWizard>
       <Typography component="h1" variant="h1">
-        Place Order
+        Review your Order
       </Typography>
       <Grid container spacing={1}>
         <Grid item md={9} xs={12}>
@@ -112,9 +126,7 @@ const PlaceOrder = () => {
                 {shippingAddress.country}
               </ListItem>
             </List>
-          </Card>
-
-          <Card className={classes.section}>
+            <Divider variant="inset" />
             <List>
               <ListItem>
                 <Typography component="h2" variant="h2">
@@ -127,11 +139,6 @@ const PlaceOrder = () => {
 
           <Card className={classes.section}>
             <List>
-              <ListItem>
-                <Typography component="h2" variant="h2">
-                  Order Items
-                </Typography>
-              </ListItem>
               <ListItem>
                 <TableContainer>
                   <Table>
@@ -170,7 +177,9 @@ const PlaceOrder = () => {
                           <TableCell align="right">{item.quantity}</TableCell>
 
                           <TableCell align="right">
-                            <Typography>${item.price}</Typography>
+                            <Typography>
+                              {formatter.format(item.price)}
+                            </Typography>
                           </TableCell>
                         </TableRow>
                       ))}
@@ -193,40 +202,60 @@ const PlaceOrder = () => {
                     <Typography>Items:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${itemsPrice}</Typography>
+                    <Typography align="right">
+                      {formatter.format(itemsPrice)}
+                    </Typography>
                   </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography>Tax:</Typography>
+                    <Typography>Shipping & Handling:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${taxPrice}</Typography>
+                    <Typography align="right">
+                      {formatter.format(shippingPrice)}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <Divider variant="inset" light />
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Total Before Tax:</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Typography align="right">
+                      {formatter.format(totalPriceBeforeTax)}
+                    </Typography>
                   </Grid>
                 </Grid>
               </ListItem>
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
-                    <Typography>Shipping:</Typography>
+                    <Typography>Estimated Tax:</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography align="right">${shippingPrice}</Typography>
+                    <Typography align="right">
+                      {formatter.format(taxPrice)}
+                    </Typography>
                   </Grid>
                 </Grid>
               </ListItem>
+              <Divider light />
               <ListItem>
                 <Grid container>
                   <Grid item xs={6}>
                     <Typography>
-                      <strong>Total:</strong>
+                      <strong>Order Total:</strong>
                     </Typography>
                   </Grid>
                   <Grid item xs={6}>
                     <Typography align="right">
-                      <strong>${totalPrice}</strong>
+                      <strong>{formatter.format(totalPrice)}</strong>
                     </Typography>
                   </Grid>
                 </Grid>

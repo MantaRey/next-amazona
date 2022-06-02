@@ -15,6 +15,7 @@ import {
   TableRow,
   Typography,
 } from '@material-ui/core';
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import NextLink from 'next/link';
 import Image from 'next/image';
 import React, { useContext } from 'react';
@@ -30,6 +31,17 @@ const CartScreen = () => {
   const {
     cart: { cartItems },
   } = state;
+
+  //Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
     if (data.countInStock <= 0) {
@@ -47,9 +59,19 @@ const CartScreen = () => {
   };
   return (
     <Layout title="Shopping Cart">
-      <Typography component="h1" variant="h1">
-        Shopping Cart
-      </Typography>
+      <div
+        className="Header"
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+        }}
+      >
+        <ShoppingCartOutlinedIcon />
+        <Typography component="h1" variant="h1">
+          &nbsp; Shopping Cart &nbsp;
+        </Typography>
+      </div>
+
       {cartItems.length === 0 ? (
         <div>
           Cart is Empty.{' '}
@@ -111,12 +133,15 @@ const CartScreen = () => {
                         </Select>
                       </TableCell>
 
-                      <TableCell align="right">${item.price}</TableCell>
+                      <TableCell align="right">
+                        {formatter.format(item.price)}
+                      </TableCell>
 
                       <TableCell align="right">
                         <Button
                           variant="contained"
                           color="secondary"
+                          disableElevation
                           onClick={() => removeItemHandler(item)}
                         >
                           x
@@ -134,8 +159,10 @@ const CartScreen = () => {
                 <ListItem>
                   <Typography variant="h2">
                     Subtotal ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    items) : $
-                    {cartItems.reduce((a, c) => a + c.quantity * c.price, 0)}
+                    items) :{' '}
+                    {formatter.format(
+                      cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+                    )}
                   </Typography>
                 </ListItem>
                 <ListItem>

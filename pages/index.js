@@ -52,13 +52,14 @@ export default function Home(props) {
         swipe="true"
         navButtonsProps={{
           style: {
-            backgroundColor: 'cornflowerblue',
+            backgroundColor: '#208080',
+            // backgroundColor: 'cornflowerblue',
             color: 'white',
           },
         }}
         indicatorIconButtonProps={{ style: { padding: '0.625rem' } }}
         activeIndicatorIconButtonProps={{
-          style: { color: 'cornflowerblue' },
+          style: { color: '#208080' },
         }}
       >
         {featuredProducts.map((product) => (

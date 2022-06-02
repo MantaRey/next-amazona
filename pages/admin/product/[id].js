@@ -11,12 +11,16 @@ import {
   CircularProgress,
   FormControlLabel,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
   TextField,
   Typography,
 } from '@material-ui/core';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import LinkIcon from '@mui/icons-material/Link';
+import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
@@ -338,6 +342,15 @@ const ProductEdit = ({ params }) => {
                             id="price"
                             label="Price"
                             error={Boolean(errors.price)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <AttachMoneyIcon
+                                    sx={{ color: 'action.active', mr: 1 }}
+                                  />
+                                </InputAdornment>
+                              ),
+                            }}
                             helperText={errors.price ? 'Price is Required' : ''}
                             {...field}
                           ></TextField>
@@ -360,6 +373,15 @@ const ProductEdit = ({ params }) => {
                             id="image"
                             label="Image"
                             error={Boolean(errors.image)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <LinkIcon
+                                    sx={{ color: 'action.active', mr: 1 }}
+                                  />
+                                </InputAdornment>
+                              ),
+                            }}
                             helperText={errors.image ? 'Image is Required' : ''}
                             {...field}
                           ></TextField>
@@ -367,7 +389,11 @@ const ProductEdit = ({ params }) => {
                       ></Controller>
                     </ListItem>
                     <ListItem>
-                      <Button variant="contained" component="label">
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component="label"
+                      >
                         Upload File
                         <input
                           type="file"
@@ -413,6 +439,15 @@ const ProductEdit = ({ params }) => {
                             id="featuredImage"
                             label="Featured Image"
                             error={Boolean(errors.featuredImage)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <LinkIcon
+                                    sx={{ color: 'action.active', mr: 1 }}
+                                  />
+                                </InputAdornment>
+                              ),
+                            }}
                             helperText={
                               errors.featuredImage
                                 ? `Featured Image is Required while 'Featured Product' is Selected`
@@ -424,7 +459,11 @@ const ProductEdit = ({ params }) => {
                       ></Controller>
                     </ListItem>
                     <ListItem>
-                      <Button variant="contained" component="label">
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        component="label"
+                      >
                         Upload File
                         <input
                           type="file"
@@ -522,6 +561,15 @@ const ProductEdit = ({ params }) => {
                             id="description"
                             label="Description"
                             error={Boolean(errors.description)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <DriveFileRenameOutlineIcon
+                                    sx={{ color: 'action.active', mr: 1 }}
+                                  />
+                                </InputAdornment>
+                              ),
+                            }}
                             helperText={
                               errors.description
                                 ? 'Description is Required'

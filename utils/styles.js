@@ -81,7 +81,8 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: 5,
   },
   searchInput: {
-    paddingLeft: 5,
+    paddingRight: '6.25rem',
+    paddingLeft: '0.625rem',
     color: '#000000',
     '& ::placeholder': {
       color: '#606060',

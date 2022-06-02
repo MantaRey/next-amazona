@@ -34,6 +34,12 @@ function reducer(state, action) {
   }
 }
 
+//Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+var formatter = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
 const OrderHistory = () => {
   const { state } = useContext(Store);
   const router = useRouter();
@@ -113,7 +119,9 @@ const OrderHistory = () => {
                           <TableRow key={order._id}>
                             <TableCell>{order._id.substring(20, 24)}</TableCell>
                             <TableCell>{order.createdAt}</TableCell>
-                            <TableCell>${order.totalPrice}</TableCell>
+                            <TableCell>
+                              {formatter.format(order.totalPrice)}
+                            </TableCell>
                             <TableCell>
                               {order.isPaid
                                 ? `Paid on ${order.paidAt}`
@@ -126,7 +134,13 @@ const OrderHistory = () => {
                             </TableCell>
                             <TableCell>
                               <NextLink href={`/order/${order._id}`} passHref>
-                                <Button variant="contained">Details</Button>
+                                <Button
+                                  variant="contained"
+                                  color="secondary"
+                                  disableElevation
+                                >
+                                  Details
+                                </Button>
                               </NextLink>
                             </TableCell>
                           </TableRow>

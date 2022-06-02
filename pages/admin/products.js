@@ -78,6 +78,16 @@ const AdminProducts = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
+  //Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
+
   useEffect(() => {
     if (!userInfo) {
       router.push('/login');
@@ -223,7 +233,9 @@ const AdminProducts = () => {
                               {product._id.substring(20, 24)}
                             </TableCell>
                             <TableCell>{product.name}</TableCell>
-                            <TableCell>${product.price}</TableCell>
+                            <TableCell>
+                              {formatter.format(product.price)}
+                            </TableCell>
                             <TableCell>{product.category}</TableCell>
                             <TableCell>{product.countInStock}</TableCell>
                             <TableCell>{product.rating}</TableCell>
@@ -232,7 +244,12 @@ const AdminProducts = () => {
                                 href={`/admin/product/${product._id}`}
                                 passHref
                               >
-                                <Button size="small" variant="contained">
+                                <Button
+                                  size="small"
+                                  variant="contained"
+                                  color="secondary"
+                                  disableElevation
+                                >
                                   Edit
                                 </Button>
                               </NextLink>{' '}
@@ -242,6 +259,8 @@ const AdminProducts = () => {
                                 }
                                 size="small"
                                 variant="contained"
+                                color="error"
+                                disableElevation
                               >
                                 Delete
                               </Button>

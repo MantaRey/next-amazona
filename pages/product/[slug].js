@@ -6,9 +6,7 @@
 
 import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-// import data from '../../utils/data';
 import Layout from '../../components/Layout';
-import NextLink from 'next/link';
 import Image from 'next/image';
 import {
   Link,
@@ -20,7 +18,10 @@ import {
   Button,
   TextField,
   CircularProgress,
+  MenuItem,
+  Select,
 } from '@material-ui/core';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import Rating from '@material-ui/lab/Rating';
 import useStyles from '../../utils/styles';
 import db from '../../utils/db';
@@ -38,10 +39,22 @@ const ProductScreen = (props) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
+  const [selectedQuantity, setSelectedQuantity] = useState(1);
+
   const [reviews, setReviews] = useState([]);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [loading, setLoading] = useState(false);
+
+  //Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
 
   //Initiates an AJAX request, sending the Review data to the backend. Upon success, review is saved and Product is updated.
   const submitHandler = async (e) => {
@@ -105,30 +118,42 @@ const ProductScreen = (props) => {
   //Upon success, the current Product is added to the User's Cart.
   const addToCartHandler = async () => {
     const { data } = await axios.get(`/api/products/${product._id}`);
-    // console.log(data);
     if (data.countInStock <= 0) {
       window.alert('Sorry, the Product is out of Stock.');
       return;
     }
     const existItem = state.cart.cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
+    const quantity = existItem ? existItem.quantity + selectedQuantity : 1;
     if (data.countInStock < quantity) {
       window.alert(
-        'Sorry, there are not enough of this Product in Stock to add another to your Cart.'
+        `Sorry, there are not enough of this Product in Stock to add '` +
+          selectedQuantity +
+          `' more to your Cart.`
       );
       return;
     }
-    dispatch({ type: 'CART_ADD_ITEM', payload: { ...product, quantity } });
+    dispatch({
+      type: 'CART_ADD_ITEM',
+      payload: { ...product, quantity },
+    });
     router.push('/cart');
   };
+
+  const goBackHandler = async () => {
+    router.back();
+  };
+
   return (
     <Layout title={product.name} description={product.description}>
       <div className={classes.section}>
-        <NextLink href="/" passHref>
-          <Link>
-            <Typography>&larr; Back to Products</Typography>
-          </Link>
-        </NextLink>
+        <Button
+          size="small"
+          color="secondary"
+          startIcon={<ArrowBackIcon />}
+          onClick={goBackHandler}
+        >
+          Back to Products
+        </Button>
       </div>
       <Grid container spacing={1}>
         <Grid item md={6} xs={12}>
@@ -176,7 +201,7 @@ const ProductScreen = (props) => {
                     <Typography>Price</Typography>
                   </Grid>
                   <Grid item xs={6}>
-                    <Typography>${product.price}</Typography>
+                    <Typography>{formatter.format(product.price)}</Typography>
                   </Grid>
                 </Grid>
               </ListItem>
@@ -189,6 +214,26 @@ const ProductScreen = (props) => {
                     <Typography>
                       {product.countInStock > 0 ? 'In Stock' : 'Unavailable'}
                     </Typography>
+                  </Grid>
+                </Grid>
+              </ListItem>
+              <ListItem>
+                <Grid container>
+                  <Grid item xs={6}>
+                    <Typography>Quantity</Typography>
+                  </Grid>
+                  <Grid item xs={6}>
+                    <Select
+                      value={selectedQuantity}
+                      onChange={(e) => setSelectedQuantity(e.target.value)}
+                    >
+                      {[...Array(product.countInStock).keys()].map((x) => (
+                        <MenuItem key={x + 1} value={x + 1}>
+                          {x + 1}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                    {}
                   </Grid>
                 </Grid>
               </ListItem>
@@ -234,7 +279,7 @@ const ProductScreen = (props) => {
             <form onSubmit={submitHandler} className={classes.reviewForm}>
               <List>
                 <ListItem>
-                  <Typography variant="h2">Leave your review</Typography>
+                  <Typography variant="h2">Leave your Review</Typography>
                 </ListItem>
                 <ListItem>
                   <TextField
@@ -259,7 +304,7 @@ const ProductScreen = (props) => {
                     type="submit"
                     fullWidth
                     variant="contained"
-                    color="primary"
+                    color="secondary"
                   >
                     Submit
                   </Button>

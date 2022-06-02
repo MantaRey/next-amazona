@@ -2,6 +2,7 @@ import {
   Button,
   Card,
   CircularProgress,
+  Divider,
   Grid,
   Link,
   List,
@@ -80,8 +81,9 @@ const Order = ({ params }) => {
     paymentMethod,
     orderItems,
     itemsPrice,
-    taxPrice,
     shippingPrice,
+    totalPriceBeforeTax,
+    taxPrice,
     totalPrice,
     isDelivered,
     isPaid,
@@ -90,6 +92,16 @@ const Order = ({ params }) => {
   } = order;
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+
+  //Formats a number to be diplayed as proper US currency (e.g. 11.5 -> $11.50)
+  var formatter = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+
+    // These options are needed to round to whole numbers if that's what you want.
+    //minimumFractionDigits: 0, // (this suffices for whole numbers, but will print 2500.10 as $2,500.1)
+    //maximumFractionDigits: 0, // (causes 2500.99 to be printed as $2,501)
+  });
 
   useEffect(() => {
     if (!userInfo) {
@@ -102,6 +114,7 @@ const Order = ({ params }) => {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        // console.log(data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -292,7 +305,9 @@ const Order = ({ params }) => {
                             <TableCell align="right">{item.quantity}</TableCell>
 
                             <TableCell align="right">
-                              <Typography>${item.price}</Typography>
+                              <Typography>
+                                {formatter.format(item.price)}
+                              </Typography>
                             </TableCell>
                           </TableRow>
                         ))}
@@ -315,40 +330,60 @@ const Order = ({ params }) => {
                       <Typography>Items:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${itemsPrice}</Typography>
+                      <Typography align="right">
+                        {formatter.format(itemsPrice)}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Tax:</Typography>
+                      <Typography>Shipping & Handling:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${taxPrice}</Typography>
+                      <Typography align="right">
+                        {formatter.format(shippingPrice)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </ListItem>
+                <Divider variant="inset" light />
+                <ListItem>
+                  <Grid container>
+                    <Grid item xs={6}>
+                      <Typography>Total Before Tax:</Typography>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Typography align="right">
+                        {formatter.format(totalPriceBeforeTax)}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
-                      <Typography>Shipping:</Typography>
+                      <Typography>Estimated Tax:</Typography>
                     </Grid>
                     <Grid item xs={6}>
-                      <Typography align="right">${shippingPrice}</Typography>
+                      <Typography align="right">
+                        {formatter.format(taxPrice)}
+                      </Typography>
                     </Grid>
                   </Grid>
                 </ListItem>
+                <Divider light />
                 <ListItem>
                   <Grid container>
                     <Grid item xs={6}>
                       <Typography>
-                        <strong>Total:</strong>
+                        <strong>Order Total:</strong>
                       </Typography>
                     </Grid>
                     <Grid item xs={6}>
                       <Typography align="right">
-                        <strong>${totalPrice}</strong>
+                        <strong>{formatter.format(totalPrice)}</strong>
                       </Typography>
                     </Grid>
                   </Grid>

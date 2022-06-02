@@ -2,12 +2,16 @@ import {
   Button,
   Card,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
   TextField,
   Typography,
 } from '@material-ui/core';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from '@mui/icons-material/Password';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
@@ -90,7 +94,7 @@ const Profile = () => {
             <List>
               <ListItem>
                 <Typography component="h1" variant="h1">
-                  Profile
+                  &nbsp; Profile &nbsp;
                 </Typography>
               </ListItem>
               <ListItem>
@@ -109,23 +113,37 @@ const Profile = () => {
                           minLength: 2,
                         }}
                         render={({ field }) => (
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="name"
-                            label="Name"
-                            inputProps={{ type: 'name' }}
-                            error={Boolean(errors.name)}
-                            helperText={
-                              errors.name
-                                ? errors.name.type === 'minLength'
-                                  ? 'Name length must be more than 1 character'
-                                  : 'Name is Required'
-                                : ''
-                            }
-                            // onChange={(e) => setName(e.target.value)}
-                            {...field}
-                          ></TextField>
+                          <>
+                            {/* <AccountCircleIcon
+                              sx={{ color: 'action.active', mr: 1 }}
+                            /> */}
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              id="name"
+                              label="Name"
+                              inputProps={{ type: 'name' }}
+                              error={Boolean(errors.name)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <AccountCircleIcon
+                                      sx={{ color: 'action.active', mr: 1 }}
+                                    />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              helperText={
+                                errors.name
+                                  ? errors.name.type === 'minLength'
+                                    ? 'Name length must be more than 1 character'
+                                    : 'Name is Required'
+                                  : ''
+                              }
+                              // onChange={(e) => setName(e.target.value)}
+                              {...field}
+                            ></TextField>
+                          </>
                         )}
                       ></Controller>
                     </ListItem>
@@ -140,23 +158,35 @@ const Profile = () => {
                           pattern: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/,
                         }}
                         render={({ field }) => (
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="email"
-                            label="Email"
-                            inputProps={{ type: 'email' }}
-                            error={Boolean(errors.email)}
-                            helperText={
-                              errors.email
-                                ? errors.email.type === 'pattern'
-                                  ? 'Email is not valid'
-                                  : 'Email is Required'
-                                : ''
-                            }
-                            // onChange={(e) => setEmail(e.target.value)}
-                            {...field}
-                          ></TextField>
+                          <>
+                            {/* <EmailIcon sx={{ color: 'action.active', mr: 1 }} /> */}
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              id="email"
+                              label="Email"
+                              inputProps={{ type: 'email' }}
+                              error={Boolean(errors.email)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <EmailIcon
+                                      sx={{ color: 'action.active', mr: 1 }}
+                                    />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              helperText={
+                                errors.email
+                                  ? errors.email.type === 'pattern'
+                                    ? 'Email is not valid'
+                                    : 'Email is Required'
+                                  : ''
+                              }
+                              // onChange={(e) => setEmail(e.target.value)}
+                              {...field}
+                            ></TextField>
+                          </>
                         )}
                       ></Controller>
                     </ListItem>
@@ -173,20 +203,34 @@ const Profile = () => {
                             'Password length must be more than 5 characters',
                         }}
                         render={({ field }) => (
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="password"
-                            label="Password"
-                            inputProps={{ type: 'password' }}
-                            error={Boolean(errors.password)}
-                            helperText={
-                              errors.password
-                                ? 'Password length must be more than 5 characters'
-                                : ''
-                            }
-                            {...field}
-                          ></TextField>
+                          <>
+                            {/* <PasswordIcon
+                              sx={{ color: 'action.active', mr: 1 }}
+                            /> */}
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              id="password"
+                              label="Password"
+                              inputProps={{ type: 'password' }}
+                              error={Boolean(errors.password)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <PasswordIcon
+                                      sx={{ color: 'action.active', mr: 1 }}
+                                    />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              helperText={
+                                errors.password
+                                  ? 'Password length must be more than 5 characters'
+                                  : ''
+                              }
+                              {...field}
+                            ></TextField>
+                          </>
                         )}
                       ></Controller>
                     </ListItem>
@@ -203,20 +247,34 @@ const Profile = () => {
                             'Confirm Password length must be more than 5 characters',
                         }}
                         render={({ field }) => (
-                          <TextField
-                            variant="outlined"
-                            fullWidth
-                            id="confirmPassword"
-                            label="Confirm Password"
-                            inputProps={{ type: 'password' }}
-                            error={Boolean(errors.confirmPassword)}
-                            helperText={
-                              errors.confirmPassword
-                                ? 'Confirm Password length must be more than 5 characters'
-                                : ''
-                            }
-                            {...field}
-                          ></TextField>
+                          <>
+                            {/* <PasswordIcon
+                              sx={{ color: 'action.active', mr: 1 }}
+                            /> */}
+                            <TextField
+                              variant="outlined"
+                              fullWidth
+                              id="confirmPassword"
+                              label="Confirm Password"
+                              inputProps={{ type: 'password' }}
+                              error={Boolean(errors.confirmPassword)}
+                              InputProps={{
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <PasswordIcon
+                                      sx={{ color: 'action.active', mr: 1 }}
+                                    />
+                                  </InputAdornment>
+                                ),
+                              }}
+                              helperText={
+                                errors.confirmPassword
+                                  ? 'Confirm Password length must be more than 5 characters'
+                                  : ''
+                              }
+                              {...field}
+                            ></TextField>
+                          </>
                         )}
                       ></Controller>
                     </ListItem>

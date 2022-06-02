@@ -10,12 +10,14 @@ import {
   CircularProgress,
   FormControlLabel,
   Grid,
+  InputAdornment,
   List,
   ListItem,
   ListItemText,
   TextField,
   Typography,
 } from '@material-ui/core';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
 import NextLink from 'next/link';
@@ -183,6 +185,15 @@ const UserEdit = ({ params }) => {
                             id="name"
                             label="Name"
                             error={Boolean(errors.name)}
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <AccountCircleIcon
+                                    sx={{ color: 'action.active', mr: 1 }}
+                                  />
+                                </InputAdornment>
+                              ),
+                            }}
                             helperText={errors.name ? 'Name is Required' : ''}
                             {...field}
                           ></TextField>

@@ -1,5 +1,5 @@
 /*
-  User Product Search Page -- /search/?{category}={_____}
+  User Product Search Page -- /search/?{category}={_____}&{search}={_____}
   Users can apply different filters to the available Inventory to better find their desired results
 */
 
@@ -232,11 +232,12 @@ const Search = (props) => {
                 Sort by
               </Typography>
               <Select value={sort} onChange={sortHandler}>
+                <MenuItem value="toprated">Ratings: High to Low</MenuItem>
                 <MenuItem value="featured">Featured</MenuItem>
                 <MenuItem value="lowest">Price: Low to High</MenuItem>
                 <MenuItem value="highest">Price: High to Low</MenuItem>
-                <MenuItem value="toprated">Customer Reviews</MenuItem>
                 <MenuItem value="newest">Newest Arrivals</MenuItem>
+                <MenuItem value="all"></MenuItem>
               </Select>
             </Grid>
           </Grid>
@@ -315,7 +316,7 @@ export async function getServerSideProps({ query }) {
   //The order in which the results should be displayed in
   const order =
     sort === 'featured'
-      ? { featured: -1 }
+      ? { isFeatured: -1 }
       : sort === 'lowest'
       ? { price: 1 }
       : sort === 'highest'
