@@ -162,7 +162,6 @@ const ProductScreen = (props) => {
             alt={product.name}
             width={640}
             height={640}
-            // layout="responsive"
           />
         </Grid>
         <Grid item md={3} xs={12}>
@@ -181,10 +180,7 @@ const ProductScreen = (props) => {
             <ListItem>
               <Rating value={product.rating} readOnly></Rating>
               <Link href="#reviews">
-                <Typography>
-                  {/* Rating: {product.rating} stars ({product.numReviews} reviews) */}
-                  ({product.numReviews} reviews)
-                </Typography>
+                <Typography>({product.numReviews} reviews)</Typography>
               </Link>
             </ListItem>
             <ListItem>

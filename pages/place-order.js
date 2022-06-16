@@ -99,11 +99,10 @@ const PlaceOrder = () => {
       router.push('/login?redirect=/place-order');
     } else if (!paymentMethod) {
       router.push('/payment');
+    } else if (cartItems.length === 0) {
+      router.push('/cart');
     }
-    // if (cartItems.length === 0) {
-    //   router.push('/cart');
-    // }
-  }, [userInfo, paymentMethod, router]);
+  }, [userInfo, paymentMethod, cartItems, router]);
 
   return (
     <Layout title="Place Order">
@@ -121,9 +120,9 @@ const PlaceOrder = () => {
                 </Typography>
               </ListItem>
               <ListItem>
-                {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                {shippingAddress.country}
+                {shippingAddress.fullName}, {shippingAddress.address},
+                {shippingAddress.city}, {shippingAddress.state}{' '}
+                {shippingAddress.postalCode},{shippingAddress.country}
               </ListItem>
             </List>
             <Divider variant="inset" />
@@ -284,5 +283,5 @@ const PlaceOrder = () => {
 };
 
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, CartScreen does not need to be Indexed, it is personalized for each user
+//Instead we want it on Client-Side where SEO does not matter, PlaceOrder Screen does not need to be Indexed, it is personalized for each user
 export default dynamic(() => Promise.resolve(PlaceOrder), { ssr: false });

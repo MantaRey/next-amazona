@@ -54,7 +54,29 @@ const reducer = (state, action) => {
       Cookies.set('shippingAddress', JSON.stringify(action.payload));
       return {
         ...state,
-        cart: { ...state.cart, shippingAddress: action.payload },
+        cart: {
+          ...state.cart,
+          shippingAddress: { ...state.cart.shippingAddress, ...action.payload },
+        },
+      };
+    }
+    case 'SAVE_SHIPPING_ADDRESS_MAP_LOCATION': {
+      Cookies.set('shippingAddress', JSON.stringify(action.payload));
+      const locationArray = action.payload.address.split(',');
+      return {
+        ...state,
+        cart: {
+          ...state.cart,
+          shippingAddress: {
+            ...state.cart.shippingAddress,
+            address: locationArray[0],
+            city: locationArray[1],
+            state: locationArray[2].split(' ')[1],
+            postalCode: locationArray[2].split(' ')[2],
+            country: locationArray[3],
+            location: action.payload,
+          },
+        },
       };
     }
     case 'SAVE_PAYMENT_METHOD': {
@@ -79,7 +101,11 @@ const reducer = (state, action) => {
         ...state,
         userInfo: null,
         darkMode: false,
-        cart: { cartItems: [], shippingAddress: {}, paymentMethod: '' },
+        cart: {
+          cartItems: [],
+          shippingAddress: {},
+          paymentMethod: '',
+        },
       };
     }
     default:

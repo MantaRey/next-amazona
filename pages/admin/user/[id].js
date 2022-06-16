@@ -188,9 +188,7 @@ const UserEdit = ({ params }) => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <AccountCircleIcon
-                                    sx={{ color: 'action.active', mr: 1 }}
-                                  />
+                                  <AccountCircleIcon sx={{ mr: 1 }} />
                                 </InputAdornment>
                               ),
                             }}

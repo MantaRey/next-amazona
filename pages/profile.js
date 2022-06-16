@@ -74,7 +74,6 @@ const Profile = () => {
     <Layout title="Profile">
       <Grid container spacing={1}>
         <Grid item md={3} xs={12}>
-          {/* <Card className={classes.section}> */}
           <List>
             <NextLink href="/profile" passHref>
               <ListItem selected button component="a">
@@ -87,7 +86,6 @@ const Profile = () => {
               </ListItem>
             </NextLink>
           </List>
-          {/* </Card> */}
         </Grid>
         <Grid item md={9} xs={12}>
           <Card className={classes.section}>
@@ -114,9 +112,6 @@ const Profile = () => {
                         }}
                         render={({ field }) => (
                           <>
-                            {/* <AccountCircleIcon
-                              sx={{ color: 'action.active', mr: 1 }}
-                            /> */}
                             <TextField
                               variant="outlined"
                               fullWidth
@@ -128,7 +123,8 @@ const Profile = () => {
                                 endAdornment: (
                                   <InputAdornment position="end">
                                     <AccountCircleIcon
-                                      sx={{ color: 'action.active', mr: 1 }}
+                                      // sx={{ color: 'action.active', mr: 1 }}
+                                      sx={{ mr: 1 }}
                                     />
                                   </InputAdornment>
                                 ),
@@ -159,7 +155,6 @@ const Profile = () => {
                         }}
                         render={({ field }) => (
                           <>
-                            {/* <EmailIcon sx={{ color: 'action.active', mr: 1 }} /> */}
                             <TextField
                               variant="outlined"
                               fullWidth
@@ -170,9 +165,7 @@ const Profile = () => {
                               InputProps={{
                                 endAdornment: (
                                   <InputAdornment position="end">
-                                    <EmailIcon
-                                      sx={{ color: 'action.active', mr: 1 }}
-                                    />
+                                    <EmailIcon sx={{ mr: 1 }} />
                                   </InputAdornment>
                                 ),
                               }}
@@ -204,9 +197,6 @@ const Profile = () => {
                         }}
                         render={({ field }) => (
                           <>
-                            {/* <PasswordIcon
-                              sx={{ color: 'action.active', mr: 1 }}
-                            /> */}
                             <TextField
                               variant="outlined"
                               fullWidth
@@ -217,9 +207,7 @@ const Profile = () => {
                               InputProps={{
                                 endAdornment: (
                                   <InputAdornment position="end">
-                                    <PasswordIcon
-                                      sx={{ color: 'action.active', mr: 1 }}
-                                    />
+                                    <PasswordIcon sx={{ mr: 1 }} />
                                   </InputAdornment>
                                 ),
                               }}
@@ -248,9 +236,6 @@ const Profile = () => {
                         }}
                         render={({ field }) => (
                           <>
-                            {/* <PasswordIcon
-                              sx={{ color: 'action.active', mr: 1 }}
-                            /> */}
                             <TextField
                               variant="outlined"
                               fullWidth
@@ -261,9 +246,7 @@ const Profile = () => {
                               InputProps={{
                                 endAdornment: (
                                   <InputAdornment position="end">
-                                    <PasswordIcon
-                                      sx={{ color: 'action.active', mr: 1 }}
-                                    />
+                                    <PasswordIcon sx={{ mr: 1 }} />
                                   </InputAdornment>
                                 ),
                               }}

@@ -1,11 +1,14 @@
 import {
   Button,
+  InputAdornment,
   Link,
   List,
   ListItem,
   TextField,
   Typography,
 } from '@material-ui/core';
+import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from '@mui/icons-material/Password';
 import React, { useContext } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
@@ -36,7 +39,6 @@ const Login = () => {
   // const [password, setPassword] = useState('');
 
   const submitHandler = async ({ email, password }) => {
-    // e.preventDefault();
     closeSnackbar();
     try {
       const { data } = await axios.post('/api/users/login', {
@@ -80,6 +82,13 @@ const Login = () => {
                         : 'Email is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <EmailIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
@@ -111,6 +120,13 @@ const Login = () => {
                         : 'Password is Required'
                       : ''
                   }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <PasswordIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   // onChange={(e) => setPassword(e.target.value)}
                   {...field}
                 ></TextField>

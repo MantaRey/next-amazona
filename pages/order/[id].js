@@ -114,7 +114,6 @@ const Order = ({ params }) => {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
-        // console.log(data);
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
@@ -233,9 +232,20 @@ const Order = ({ params }) => {
                   </Typography>
                 </ListItem>
                 <ListItem>
-                  {shippingAddress.fullName}, {shippingAddress.address},{' '}
-                  {shippingAddress.city}, {shippingAddress.postalCode},{' '}
-                  {shippingAddress.country}
+                  {shippingAddress.fullName}, {shippingAddress.address},
+                  {shippingAddress.city}, {shippingAddress.state}{' '}
+                  {shippingAddress.postalCode},{shippingAddress.country}
+                </ListItem>
+                <ListItem>
+                  {shippingAddress.location && (
+                    <Link
+                      variant="button"
+                      target="_new"
+                      href={`https://maps.google.com?q=${shippingAddress.location.lat},${shippingAddress.location.lng}`}
+                    >
+                      Show on Map
+                    </Link>
+                  )}
                 </ListItem>
                 <ListItem>
                   Status:{' '}
@@ -430,5 +440,5 @@ export async function getServerSideProps({ params }) {
 }
 
 //Dynamic is used when we do not want something rendered on Server-Side
-//Instead we want it on Client-Side where SEO does not matter, CartScreen does not need to be Indexed, it is personalized for each user
+//Instead we want it on Client-Side where SEO does not matter, OrderScreen does not need to be Indexed, it is personalized for each user
 export default dynamic(() => Promise.resolve(Order), { ssr: false });

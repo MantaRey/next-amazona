@@ -9,6 +9,7 @@ import {
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
 import LocationCityIcon from '@mui/icons-material/LocationCity';
+import LandscapeIcon from '@mui/icons-material/Landscape';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import PublicIcon from '@mui/icons-material/Public';
 import React, { useContext, useEffect } from 'react';
@@ -26,11 +27,13 @@ const Shipping = () => {
     userInfo,
     cart: { shippingAddress, cartItems },
   } = state;
+  const { location } = shippingAddress;
   const {
     handleSubmit,
     control,
     formState: { errors },
     setValue,
+    getValues,
   } = useForm();
   useEffect(() => {
     if (!userInfo) {
@@ -41,6 +44,7 @@ const Shipping = () => {
       setValue('fullName', shippingAddress.fullName);
       setValue('address', shippingAddress.address);
       setValue('city', shippingAddress.city);
+      setValue('state', shippingAddress.state);
       setValue('postalCode', shippingAddress.postalCode);
       setValue('country', shippingAddress.country);
     }
@@ -51,20 +55,60 @@ const Shipping = () => {
     shippingAddress.fullName,
     shippingAddress.address,
     shippingAddress.city,
+    shippingAddress.state,
     shippingAddress.postalCode,
     shippingAddress.country,
+    location,
     cartItems,
   ]);
 
   const classes = useStyles();
 
-  const submitHandler = ({ fullName, address, city, postalCode, country }) => {
+  const submitHandler = ({
+    fullName,
+    address,
+    city,
+    state,
+    postalCode,
+    country,
+  }) => {
     dispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
-      payload: { fullName, address, city, postalCode, country },
+      payload: {
+        fullName,
+        address,
+        city,
+        state,
+        postalCode,
+        country,
+        location,
+      },
     });
     router.push('/payment');
   };
+
+  const chooseLocationHandler = () => {
+    const fullName = getValues('fullName');
+    const address = getValues('address');
+    const city = getValues('city');
+    const state = getValues('state');
+    const postalCode = getValues('postalCode');
+    const country = getValues('country');
+    dispatch({
+      type: 'SAVE_SHIPPING_ADDRESS',
+      payload: {
+        fullName,
+        address,
+        city,
+        state,
+        postalCode,
+        country,
+        location,
+      },
+    });
+    router.push('/map');
+  };
+
   return (
     <Layout title="Shipping Address">
       <CheckoutWizard activeStep={1} />
@@ -100,17 +144,28 @@ const Shipping = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <AccountCircleIcon
-                          sx={{ color: 'action.active', mr: 1 }}
-                        />
+                        <AccountCircleIcon sx={{ mr: 1 }} />
                       </InputAdornment>
                     ),
                   }}
-                  // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
               )}
             ></Controller>
+          </ListItem>
+
+          <ListItem>
+            <Button
+              variant="contained"
+              type="button"
+              color="secondary"
+              onClick={chooseLocationHandler}
+            >
+              Choose on Map
+            </Button>
+            <Typography>
+              &nbsp;{location && `${location.lat}, ${location.lng}`}
+            </Typography>
           </ListItem>
 
           <ListItem>
@@ -140,11 +195,10 @@ const Shipping = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <HomeIcon sx={{ color: 'action.active', mr: 1 }} />
+                        <HomeIcon sx={{ mr: 1 }} />
                       </InputAdornment>
                     ),
                   }}
-                  // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
               )}
@@ -178,13 +232,49 @@ const Shipping = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <LocationCityIcon
-                          sx={{ color: 'action.active', mr: 1 }}
-                        />
+                        <LocationCityIcon sx={{ mr: 1 }} />
                       </InputAdornment>
                     ),
                   }}
-                  // onChange={(e) => setEmail(e.target.value)}
+                  {...field}
+                ></TextField>
+              )}
+            ></Controller>
+          </ListItem>
+
+          <ListItem>
+            <Controller
+              name="state"
+              control={control}
+              defaultValue=""
+              rules={{
+                required: true,
+                minLength: 2,
+                maxLength: 2,
+              }}
+              render={({ field }) => (
+                <TextField
+                  variant="outlined"
+                  fullWidth
+                  id="state"
+                  label="State"
+                  inputProps={{ type: 'state' }}
+                  error={Boolean(errors.state)}
+                  helperText={
+                    errors.state
+                      ? errors.state.type === 'minLength' ||
+                        errors.state.type === 'maxLength'
+                        ? 'Must use 2 letter State abbreviation'
+                        : 'State is Required'
+                      : ''
+                  }
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <LandscapeIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 ></TextField>
               )}
@@ -218,11 +308,10 @@ const Shipping = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <NumbersIcon sx={{ color: 'action.active', mr: 1 }} />
+                        <NumbersIcon sx={{ mr: 1 }} />
                       </InputAdornment>
                     ),
                   }}
-                  // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
               )}
@@ -256,11 +345,10 @@ const Shipping = () => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        <PublicIcon sx={{ color: 'action.active', mr: 1 }} />
+                        <PublicIcon sx={{ mr: 1 }} />
                       </InputAdornment>
                     ),
                   }}
-                  // onChange={(e) => setEmail(e.target.value)}
                   {...field}
                 ></TextField>
               )}
@@ -277,7 +365,6 @@ const Shipping = () => {
               fullWidth
               type="button"
               variant="contained"
-              color="secondary"
               onClick={() => router.push('/cart')}
             >
               Back

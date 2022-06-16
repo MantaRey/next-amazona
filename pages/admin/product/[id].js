@@ -20,6 +20,7 @@ import {
 } from '@material-ui/core';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import LinkIcon from '@mui/icons-material/Link';
+import NumbersIcon from '@mui/icons-material/Numbers';
 import DriveFileRenameOutlineIcon from '@mui/icons-material/DriveFileRenameOutline';
 import axios from 'axios';
 import dynamic from 'next/dynamic';
@@ -174,7 +175,6 @@ const ProductEdit = ({ params }) => {
     //bodyFormData contains the file to upload
     try {
       dispatch({ type: 'UPLOAD_REQUEST', imageField: imageField });
-      console.log('File Upload Requested');
       const { data } = await axios.post('/api/admin/upload', bodyFormData, {
         headers: {
           'Content-Type': 'mulitpart/form-data',
@@ -182,8 +182,6 @@ const ProductEdit = ({ params }) => {
         },
       });
       //Content-Type setting allows sending a file through AJAX request
-      console.log('Successful File Upload');
-      console.log(data);
       dispatch({
         type: 'UPLOAD_SUCCESS',
         payload: data.secure_url,
@@ -345,9 +343,7 @@ const ProductEdit = ({ params }) => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <AttachMoneyIcon
-                                    sx={{ color: 'action.active', mr: 1 }}
-                                  />
+                                  <AttachMoneyIcon sx={{ mr: 1 }} />
                                 </InputAdornment>
                               ),
                             }}
@@ -376,9 +372,7 @@ const ProductEdit = ({ params }) => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <LinkIcon
-                                    sx={{ color: 'action.active', mr: 1 }}
-                                  />
+                                  <LinkIcon sx={{ mr: 1 }} />
                                 </InputAdornment>
                               ),
                             }}
@@ -442,9 +436,7 @@ const ProductEdit = ({ params }) => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <LinkIcon
-                                    sx={{ color: 'action.active', mr: 1 }}
-                                  />
+                                  <LinkIcon sx={{ mr: 1 }} />
                                 </InputAdornment>
                               ),
                             }}
@@ -540,6 +532,13 @@ const ProductEdit = ({ params }) => {
                                 ? 'Count In Stock is Required'
                                 : ''
                             }
+                            InputProps={{
+                              endAdornment: (
+                                <InputAdornment position="end">
+                                  <NumbersIcon sx={{ mr: 1 }} />
+                                </InputAdornment>
+                              ),
+                            }}
                             {...field}
                           ></TextField>
                         )}
@@ -564,9 +563,7 @@ const ProductEdit = ({ params }) => {
                             InputProps={{
                               endAdornment: (
                                 <InputAdornment position="end">
-                                  <DriveFileRenameOutlineIcon
-                                    sx={{ color: 'action.active', mr: 1 }}
-                                  />
+                                  <DriveFileRenameOutlineIcon sx={{ mr: 1 }} />
                                 </InputAdornment>
                               ),
                             }}

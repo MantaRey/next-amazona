@@ -25,7 +25,7 @@ const Payment = () => {
   useEffect(() => {
     if (!userInfo) {
       router.push('/login?redirect=/payment');
-    } else if (!cart.shippingAddress) {
+    } else if (!cart.shippingAddress.address) {
       router.push('/shipping');
     } else if (cart.cartItems.length === 0) {
       router.push('/cart');
@@ -94,7 +94,6 @@ const Payment = () => {
               fullWidth
               type="button"
               variant="contained"
-              color="secondary"
               onClick={() => router.push('/shipping')}
             >
               Back

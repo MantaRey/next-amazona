@@ -1,11 +1,15 @@
 import {
   Button,
+  InputAdornment,
   Link,
   List,
   ListItem,
   TextField,
   Typography,
 } from '@material-ui/core';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import EmailIcon from '@mui/icons-material/Email';
+import PasswordIcon from '@mui/icons-material/Password';
 import React, { useContext, useEffect } from 'react';
 import Layout from '../components/Layout';
 import useStyles from '../utils/styles';
@@ -93,7 +97,13 @@ const Register = () => {
                         : 'Name is Required'
                       : ''
                   }
-                  // onChange={(e) => setName(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <AccountCircleIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 ></TextField>
               )}
@@ -124,7 +134,13 @@ const Register = () => {
                         : 'Email is Required'
                       : ''
                   }
-                  // onChange={(e) => setEmail(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <EmailIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 ></TextField>
               )}
@@ -155,7 +171,13 @@ const Register = () => {
                         : 'Password is Required'
                       : ''
                   }
-                  // onChange={(e) => setPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <PasswordIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 ></TextField>
               )}
@@ -186,7 +208,13 @@ const Register = () => {
                         : 'Confirm Password is Required'
                       : ''
                   }
-                  // onChange={(e) => setConfirmPassword(e.target.value)}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <PasswordIcon sx={{ mr: 1 }} />
+                      </InputAdornment>
+                    ),
+                  }}
                   {...field}
                 ></TextField>
               )}

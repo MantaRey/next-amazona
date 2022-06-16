@@ -53,7 +53,6 @@ export default function Home(props) {
         navButtonsProps={{
           style: {
             backgroundColor: '#208080',
-            // backgroundColor: 'cornflowerblue',
             color: 'white',
           },
         }}

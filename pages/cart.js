@@ -104,7 +104,6 @@ const CartScreen = () => {
                               alt={item.name}
                               width={50}
                               height={50}
-                              // Layout="responsive"
                             />
                           </Link>
                         </NextLink>

@@ -56,6 +56,7 @@ const ratings = [1, 2, 3, 4, 5];
 const Search = (props) => {
   const classes = useStyles();
   const router = useRouter();
+
   //Sets default values for filter parameters not found in the query, while overriding those found in the query with the User desired values
   const {
     query = 'all',
